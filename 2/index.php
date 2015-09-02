@@ -10,6 +10,8 @@ spl_autoload_register(function ($class) {
     }
 });
 
+define("APPLICATION_ROOT", "http://1dv608.erikhamrin.se/2/");
+
 $controller = new \controller\Login();
 $output = $controller->AuthenticateUser();
 

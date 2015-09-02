@@ -48,7 +48,11 @@ class Login
         return $_POST[self::$formPassword];
     }
 
-    public function showForm(){
+    public function getClientIdentifier(){
+        return $_SERVER['HTTP_USER_AGENT'] . $_SERVER['REMOTE_ADDR'];
+    }
+
+    public function generateLoginForm(){
 
         $username = null;
 
@@ -63,7 +67,7 @@ class Login
                 <p id="' . self::$formMessage . '">' . $this->message . CookieMessage::Retrieve() . '</p>
 
                 <label for="' . self::$formUser . '">Username :</label>
-                <input type="text" id="' . self::$formUser . '" name="' . self::$formUser . '" value="" />
+                <input type="text" id="' . self::$formUser . '" name="' . self::$formUser . '" value="' . $username . '" />
 
                 <label for="' . self::$formPassword . '">Password :</label>
                 <input type="password" id="' . self::$formPassword . '" name="' . self::$formPassword . '" />
@@ -76,7 +80,7 @@ class Login
         </form>';
     }
 
-    public function showLogout(){
+    public function generateLogoutForm(){
         return '
         <form  method="post" >
 				<p id="' . self::$formMessage . '">' . CookieMessage::Retrieve() .'</p>
@@ -94,7 +98,8 @@ class Login
     }
 
     public function reloadPage(){
-        header('Location: ' . $_SERVER['PHP_SELF']);
+        header('Location: ' . APPLICATION_ROOT . 'index.php');
+        //var_dump($_SERVER);
         //Force server to shut down script
         die();
     }

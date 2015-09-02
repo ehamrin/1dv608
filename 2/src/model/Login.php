@@ -13,22 +13,23 @@ class Login
 
     private static $sessionLocation = "\\Model\\Login::Logged_In";
 
-    public function isLoggedIn()
+    public function isLoggedIn($clientIdentifier)
     {
-        return isset($_SESSION[self::$sessionLocation]);
+        if(isset($_SESSION[self::$sessionLocation]) && $_SESSION[self::$sessionLocation] === $clientIdentifier){
+            return true;
+        }
+
+        return false;
+
     }
 
     public function authenticateLogin($username, $password){
-        if($username === self::$username && $password === self::$password){
-            $this->loginUser();
 
-        }
-
-        return $this->isLoggedIn();
+        return $username === self::$username && $password === self::$password;
     }
 
-    private function loginUser(){
-        $_SESSION[self::$sessionLocation] = true;
+    public function loginUser($clientIdentifier){
+        $_SESSION[self::$sessionLocation] = $clientIdentifier;
     }
 
     public function logoutUser(){
