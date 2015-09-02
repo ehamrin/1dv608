@@ -30,12 +30,12 @@ class Login
             $this->view->reloadPage();
         }
 
+        $ret->authenticated = $this->model->isLoggedIn();
+
         if($this->model->isLoggedIn()){
-            $ret->authenticated = TRUE;
             $ret->body = $this->view->showLogout();
 
         }else{
-            $ret->authenticated = FALSE;
             $ret->body = $this->view->showForm();
         }
 
