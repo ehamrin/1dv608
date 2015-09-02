@@ -12,6 +12,8 @@ class Login
     private static $formPassword = "LoginView::Password";
     private static $formMessage = "LoginView::Message";
     private static $formKeep = "LoginView::KeepMeLoggedIn";
+    private static $cookieName = "LoginView::CookieName";
+    private static $cookiePassword = "LoginView::CookiePassword";
 
     private $message;
 
@@ -46,6 +48,18 @@ class Login
 
     public function getPassword(){
         return $_POST[self::$formPassword];
+    }
+
+    public function keepUserLoggedIn(){
+        return $_POST[self::$formKeep];
+    }
+
+    public function getCookieUsername(){
+        return $_COOKIE[self::$cookieName];
+    }
+
+    public function getCookieSecurityString(){
+        return $_COOKIE[self::$cookiePassword];
     }
 
     public function getClientIdentifier(){
@@ -97,10 +111,40 @@ class Login
         CookieMessage::Set("Bye bye!");
     }
 
+    public function setPersistentLoginMessage(){
+        CookieMessage::Set("Welcome and you will be remembered");
+    }
+
+    public function setWelcomeBackMessage(){
+        CookieMessage::Set("Welcome back with cookie");
+    }
+
+    public function setWrongCookieMessage(){
+        CookieMessage::Set("Wrong information in cookies");
+    }
+
     public function reloadPage(){
-        header('Location: ' . APPLICATION_ROOT . 'index.php');
-        //var_dump($_SERVER);
+        header('Location: ' . APPLICATION_URL);
         //Force server to shut down script
         die();
+    }
+
+    public function userHasPersistentLogin(){
+        return isset($_COOKIE[self::$cookieName], $_COOKIE[self::$cookiePassword]);
+    }
+
+    public function storeLogin(\model\PersistentLogin $credentials){
+        setcookie(self::$cookieName, $credentials->user, $credentials->expiration);
+        setcookie(self::$cookiePassword, $credentials->securityString, $credentials->expiration);
+    }
+
+    public function removePersistentLogin(){
+
+        unset($_COOKIE[self::$cookieName]);
+        setcookie(self::$cookieName, null, time()-1);
+
+        unset($_COOKIE[self::$cookiePassword]);
+        setcookie(self::$cookiePassword, null, time()-1);
+
     }
 }

@@ -13,6 +13,12 @@ class Login
 
     private static $sessionLocation = "\\Model\\Login::Logged_In";
 
+    private $dal;
+
+    public function __construct(){
+        $this->dal = new dal\Login();
+    }
+
     public function isLoggedIn($clientIdentifier)
     {
         if(isset($_SESSION[self::$sessionLocation]) && $_SESSION[self::$sessionLocation] === $clientIdentifier){
@@ -26,6 +32,24 @@ class Login
     public function authenticateLogin($username, $password){
 
         return $username === self::$username && $password === self::$password;
+    }
+
+    public function authenticatePersistentLogin($username, $cookieString){
+        return $this->dal->matchPersistentAuthentication($username, $cookieString);
+    }
+
+    public function generatePersistentLogin($user){
+
+        $login = new PersistentLogin($user);
+
+        $this->dal->recordPersistentAuthentication($login);
+
+        return $login;
+    }
+
+    public function matchPersistentLogin($user, $securityString){
+
+        return $this->dal->matchPersistentAuthentication($user, $securityString);
     }
 
     public function loginUser($clientIdentifier){
