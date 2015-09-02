@@ -14,5 +14,4 @@ $controller = new \controller\Login();
 $output = $controller->AuthenticateUser();
 
 $page = new \view\HTMLPageTemplate();
-
-echo $page->Render($output);
+$page->Render($output);

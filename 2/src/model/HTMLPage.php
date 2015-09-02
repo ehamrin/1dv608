@@ -6,7 +6,8 @@ namespace model;
 
 class HTMLPage
 {
-    public $title;
-    public $header;
+    public $title = '1dv608';
+    public $header = 'Assignment 2';
+    public $authenticated;
     public $body;
 }

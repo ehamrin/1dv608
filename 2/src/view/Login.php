@@ -6,10 +6,12 @@ namespace view;
 
 class Login
 {
-    private static $formLogin = "Login_Submit";
-    private static $formLogout = "Logout_Submit";
-    private static $formUser = "username";
-    private static $formPassword = "password";
+    private static $formLogin = "LoginView::Login";
+    private static $formLogout = "LoginView::Logout";
+    private static $formUser = "LoginView::UserName";
+    private static $formPassword = "LoginView::Password";
+    private static $formMessage = "LoginView::Message";
+    private static $formKeep = "LoginView::KeepMeLoggedIn";
 
     private $message;
 
@@ -55,29 +57,31 @@ class Login
         }
 
         return '
-        <h2>Not logged in</h2>
-        <form method="POST">
+        <form method="post" >
             <fieldset>
-                <legend>Login - enter username and password</legend>
-                <p>' . $this->message . ' ' . CookieMessage::Retrieve() . '</p>
-                <input type="text" name="' . self::$formUser . '" value="' . $username . '"/>
-                <input type="password" name="' . self::$formPassword . '"/>
-                <input type="submit" name="' . self::$formLogin . '" value="Log in"/>
+                <legend>Login - enter Username and password</legend>
+                <p id="' . self::$formMessage . '">' . $this->message . CookieMessage::Retrieve() . '</p>
+
+                <label for="' . self::$formUser . '">Username :</label>
+                <input type="text" id="' . self::$formUser . '" name="' . self::$formUser . '" value="" />
+
+                <label for="' . self::$formPassword . '">Password :</label>
+                <input type="password" id="' . self::$formPassword . '" name="' . self::$formPassword . '" />
+
+                <label for="' . self::$formKeep . '">Keep me logged in  :</label>
+                <input type="checkbox" id="' . self::$formKeep . '" name="' . self::$formKeep . '" />
+
+                <input type="submit" name="' . self::$formLogin . '" value="login" />
             </fieldset>
-        </form>
-        ';
+        </form>';
     }
 
     public function showLogout(){
         return '
-        <h2>Logged in</h2>
-        <form method="POST">
-            <fieldset>
-                <legend>Logout</legend>
-                <p>' . CookieMessage::Retrieve() . '</p>
-                <input type="submit" name="' . self::$formLogout . '" value="Log out"/>
-            </fieldset>
-        </form>
+        <form  method="post" >
+				<p id="' . self::$formMessage . '">' . CookieMessage::Retrieve() .'</p>
+				<input type="submit" name="' . self::$formLogout . '" value="logout"/>
+			</form>
         ';
     }
 
