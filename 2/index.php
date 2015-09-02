@@ -1,5 +1,5 @@
 <?php
-session_name("1dv608");
+session_name("1dv608.2");
 session_start();
 
 spl_autoload_register(function ($class) {
