@@ -21,14 +21,17 @@ class Login
     public function authenticateLogin($username, $password){
         if($username === self::$username && $password === self::$password){
             $this->loginUser();
+
         }
+
+        return $this->isLoggedIn();
     }
 
     private function loginUser(){
         $_SESSION[self::$sessionLocation] = true;
     }
 
-    private function logoutUser(){
+    public function logoutUser(){
         unset($_SESSION[self::$sessionLocation]);
     }
 

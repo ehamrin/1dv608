@@ -28,7 +28,14 @@ class Login
             return false;
         }
 
+        //If both are filled out correctly, the message will only be shown if login was unsuccessful.
+        $this->message = "Wrong name or password";
+
         return true;
+    }
+
+    public function userPressedLogout(){
+        return isset($_POST[self::$formLogout]);
     }
 
     public function getUsername(){
@@ -40,14 +47,19 @@ class Login
     }
 
     public function showForm(){
-        $username = $this->userAttemptedLogin() ? $_POST[self::$formUser] : null;
+
+        $username = null;
+
+        if($this->userAttemptedLogin()){
+            $username = $_POST[self::$formUser];
+        }
 
         return '
         <h2>Not logged in</h2>
         <form method="POST">
             <fieldset>
                 <legend>Login - enter username and password</legend>
-                ' . $this->message . '
+                <p>' . $this->message . ' ' . CookieMessage::Retrieve() . '</p>
                 <input type="text" name="' . self::$formUser . '" value="' . $username . '"/>
                 <input type="password" name="' . self::$formPassword . '"/>
                 <input type="submit" name="' . self::$formLogin . '" value="Log in"/>
@@ -62,9 +74,24 @@ class Login
         <form method="POST">
             <fieldset>
                 <legend>Logout</legend>
+                <p>' . CookieMessage::Retrieve() . '</p>
                 <input type="submit" name="' . self::$formLogout . '" value="Log out"/>
             </fieldset>
         </form>
         ';
+    }
+
+    public function setLoginMessage(){
+        CookieMessage::Set("Welcome");
+    }
+
+    public function setLogoutMessage(){
+        CookieMessage::Set("Bye bye!");
+    }
+
+    public function reloadPage(){
+        header('Location: ' . $_SERVER['PHP_SELF']);
+        //Force server to shut down script
+        die();
     }
 }
