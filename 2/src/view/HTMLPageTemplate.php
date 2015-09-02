@@ -15,11 +15,12 @@ class HTMLPageTemplate
 <head>
   <meta charset="utf-8">
 
-  <title>1dv608</title>
+  <title>{$output->title}</title>
 </head>
 
 <body>
-    {$output}
+    {$output->header}
+    {$output->body}
 </body>
 </html>
 HTML;

@@ -15,6 +15,10 @@ class Login
     }
 
     public function AuthenticateUser(){
-        return "It works!";
+        $ret = new \model\HTMLPage();
+
+
+
+        return $ret;
     }
 }
