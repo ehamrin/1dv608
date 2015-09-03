@@ -6,7 +6,7 @@ namespace view;
 
 class HTMLPageTemplateView
 {
-    public function Render(\model\HTMLPageModel $output){
+    public function Render(\model\ContentModel $output){
 
     echo '<!DOCTYPE html>
 <html>

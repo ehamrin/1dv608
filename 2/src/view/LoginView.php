@@ -6,20 +6,103 @@ namespace view;
 
 class LoginView
 {
-    private static $formLogin = "LoginView::LoginView";
+    private static $formLogin = "LoginView::Login";
     private static $formLogout = "LoginView::Logout";
     private static $formUser = "LoginView::UserName";
     private static $formPassword = "LoginView::Password";
     private static $formMessage = "LoginView::Message";
     private static $formKeep = "LoginView::KeepMeLoggedIn";
+    private static $fromForm = "Login through form";
+    private static $fromCookie = "Login through cookie";
 
+    private $loginMethod;
     private $message;
+    private $persistent_login_view;
+    private $model;
 
-    public function UserAttemptedLogin(){
-        return isset($_POST[self::$formLogin]);
+    public function __construct(\model\LoginModel $model){
+        $this->persistent_login_view = new PersistentLoginView();
+        $this->model = $model;
     }
 
-    public function FormIsCorrect(){
+    public function UserAttemptedLogin(){
+        return isset($_POST[self::$formLogin]) && $this->FormIsCorrect() || $this->persistent_login_view->UserHasPersistentLogin();
+    }
+
+    public function UserPressedLogout(){
+        return isset($_POST[self::$formLogout]);
+    }
+
+    public function GetClientIdentifier(){
+        return $_SERVER['HTTP_USER_AGENT'] . $_SERVER['REMOTE_ADDR'];
+    }
+
+    public function GetUserCredentials(){
+        $username = null;
+        $password = null;
+
+        if($this->FormIsCorrect()){
+            $username = $this->GetUsername();
+            $password = $this->GetPassword();
+
+            $this->loginMethod = self::$fromForm;
+
+        }else if($this->persistent_login_view->UserHasPersistentLogin()){
+            $username = $this->persistent_login_view->GetCookieUsername();
+            $password = $this->persistent_login_view->GetCookieSecurityString();
+
+            $this->loginMethod = self::$fromCookie;
+        }
+
+        return new \model\UserCredentials($username, $password);
+    }
+
+
+    public function LoginSuccess(){
+
+        if($this->loginMethod == self::$fromForm){
+            if($this->KeepUserLoggedIn()){
+                //TODO Don't generate login here
+                $this->persistent_login_view->StoreLogin($this->model->GetPersistentLogin($this->GetUsername()));
+
+                $this->SetTemporaryMessage("Welcome and you will be remembered");
+            }
+            $this->SetTemporaryMessage("Welcome");
+
+
+        }elseif($this->loginMethod == self::$fromCookie){
+            $this->SetTemporaryMessage("Welcome back with cookie");
+        }
+    }
+
+    public function LoginFailed(){
+        if($this->loginMethod == self::$fromForm){
+
+            $this->message = "Wrong name or password";
+
+        }elseif($this->loginMethod == self::$fromCookie){
+
+            $this->persistent_login_view->RemovePersistentLogin();
+            $this->SetTemporaryMessage("Wrong information in cookies");
+
+        }
+
+    }
+
+    public function LogoutUser(){
+        $this->persistent_login_view->RemovePersistentLogin();
+        $this->SetTemporaryMessage("Bye bye!");
+    }
+
+    public function GetForm(){
+
+        if($this->model->IsLoggedIn($this->GetClientIdentifier())){
+            return $this->GetLogoutForm();
+        }
+        return $this->GetLoginForm();
+    }
+
+    private function FormIsCorrect(){
         if(empty($_POST[self::$formUser])){
             $this->message = "Username is missing";
             return false;
@@ -30,36 +113,25 @@ class LoginView
             return false;
         }
 
-        //If both are filled out correctly, the message will only be shown if login was unsuccessful.
-        $this->message = "Wrong name or password";
-
         return true;
     }
 
-    public function UserPressedLogout(){
-        return isset($_POST[self::$formLogout]);
-    }
-
-    public function GetUsername(){
+    private function GetUsername(){
         return isset($_POST[self::$formUser]) ? $_POST[self::$formUser] : '';
     }
 
-    public function GetPassword(){
+    private function GetPassword(){
         return isset($_POST[self::$formPassword]) ? $_POST[self::$formPassword] : '';
     }
 
-    public function KeepUserLoggedIn(){
+    private function KeepUserLoggedIn(){
         return isset($_POST[self::$formKeep]) ? $_POST[self::$formKeep] : '';
-    }
-
-    public function GetClientIdentifier(){
-        return $_SERVER['HTTP_USER_AGENT'] . $_SERVER['REMOTE_ADDR'];
     }
 
     /**
      * @return string
      */
-    public function GenerateLoginForm(){
+    private function GetLoginForm(){
 
         return '
         <form method="post" >
@@ -84,7 +156,7 @@ class LoginView
     /**
      * @return string
      */
-    public function GenerateLogoutForm(){
+    private function GetLogoutForm(){
         return '
         <form  method="post" >
 				<p id="' . self::$formMessage . '">' . CookieMessageView::Retrieve() .'</p>
@@ -93,28 +165,12 @@ class LoginView
         ';
     }
 
-
-    public function SetLoginMessage(){
-        CookieMessageView::Set("Welcome");
+    private function SetTemporaryMessage($message){
+        CookieMessageView::Set($message);
+        $this->ReloadPage();
     }
 
-    public function SetLogoutMessage(){
-        CookieMessageView::Set("Bye bye!");
-    }
-
-    public function SetPersistentLoginMessage(){
-        CookieMessageView::Set("Welcome and you will be remembered");
-    }
-
-    public function SetWelcomeBackMessage(){
-        CookieMessageView::Set("Welcome back with cookie");
-    }
-
-    public function SetWrongCookieMessage(){
-        CookieMessageView::Set("Wrong information in cookies");
-    }
-
-    public function ReloadPage(){
+    private function ReloadPage(){
         header('Location: ' . APPLICATION_URL);
         //Force server to shut down script
         die();

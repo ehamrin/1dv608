@@ -1,6 +1,6 @@
 <?php
-session_name("PHPSESSID-1dv608-Assignment2");
-session_set_cookie_params(0, '/2/', '1dv608.erikhamrin.se');
+session_name("PHPSESSID");
+//session_set_cookie_params(0, '/2/', '1dv608.erikhamrin.se');
 session_start();
 
 spl_autoload_register(function ($class) {
