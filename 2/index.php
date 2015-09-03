@@ -1,5 +1,5 @@
 <?php
-session_name("1dv608.2");
+session_name("PHPSESSID-1dv608-Assignment2");
 session_start();
 
 spl_autoload_register(function ($class) {
