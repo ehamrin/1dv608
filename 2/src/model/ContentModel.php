@@ -4,7 +4,7 @@
 namespace model;
 
 
-class HTMLPageModel
+class ContentModel
 {
     public $title = '1dv608';
     public $header = 'Assignment 2';

@@ -6,25 +6,16 @@ class LoginController
 {
     private $model;
     private $view;
-    private $persistent_login_view;
 
     public function __construct(){
         $this->model = new \model\LoginModel();
         $this->view = new \view\LoginView($this->model);
-        $this->persistent_login_view = new \view\PersistentLoginView();
     }
 
     public function AuthenticateUser(){
-        $ret = new \model\HTMLPageModel();
+        $ret = new \model\ContentModel();
 
-        if($this->model->IsLoggedIn($this->view->GetClientIdentifier())){
-            //Cases to allow when user is logged in
-            if($this->view->UserPressedLogout()){
-                $this->model->LogoutUser();
-                $this->view->LogoutUser();
-            }
-        }else{
-            //Cases to allow when user is logged out
+        if($this->model->IsLoggedIn($this->view->GetClientIdentifier()) == FALSE){
             if($this->view->UserAttemptedLogin()){
 
                 if($this->model->AuthenticateLogin($this->view->GetUserCredentials())){
@@ -33,7 +24,11 @@ class LoginController
                 }else{
                     $this->view->LoginFailed();
                 }
-
+            }
+        }else{
+            if($this->view->UserPressedLogout()){
+                $this->model->LogoutUser();
+                $this->view->LogoutUser();
             }
         }
 

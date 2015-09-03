@@ -34,14 +34,7 @@ class LoginModel
         return $credentials->GetUsername() === self::$username && $credentials->GetPassword() === self::$password || $this->p_dal->MatchRecord($credentials->GetUsername(), $credentials->GetPassword());
     }
 
-    //TODO Remove
-    /*
-    public function AuthenticatePersistentLogin($username, $cookieString){
-        return $this->p_dal->MatchRecord($username, $cookieString);
-    }
-    */
-
-    public function GeneratePersistentLogin($user){
+    public function GetPersistentLogin($user){
 
         $login = new PersistentLoginModel($user);
 

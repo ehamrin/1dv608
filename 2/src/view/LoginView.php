@@ -16,6 +16,7 @@ class LoginView
     private $message;
     private $persistent_login_view;
 
+
     private $model;
 
     private static $fromForm = "Login through form";
@@ -23,8 +24,9 @@ class LoginView
     private $loginMethod;
 
 
-    public function __construct($model){
+    public function __construct(\model\LoginModel $model){
         $this->persistent_login_view = new PersistentLoginView();
+
         $this->model = $model;
     }
 
@@ -97,7 +99,7 @@ class LoginView
         if($this->loginMethod == self::$fromForm){
             if($this->KeepUserLoggedIn()){
                 //TODO Don't generate login here
-                $this->persistent_login_view->StoreLogin($this->model->GeneratePersistentLogin($this->view->GetUsername()));
+                $this->persistent_login_view->StoreLogin($this->model->GetPersistentLogin($this->GetUsername()));
 
                 $this->SetPersistentLoginMessage();
             }
@@ -124,6 +126,7 @@ class LoginView
     }
 
     public function GetForm(){
+
         if($this->model->IsLoggedIn($this->GetClientIdentifier())){
             return $this->GetLogoutForm();
         }
