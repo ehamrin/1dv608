@@ -1,8 +1,6 @@
 <?php
 
-
 namespace controller;
-
 
 class LoginController
 {
@@ -22,59 +20,26 @@ class LoginController
         if($this->model->IsLoggedIn($this->view->GetClientIdentifier())){
             //Cases to allow when user is logged in
             if($this->view->UserPressedLogout()){
-                $this->LogoutUser();
-                $this->view->ReloadPage();
-
+                $this->model->LogoutUser();
+                $this->view->LogoutUser();
             }
         }else{
             //Cases to allow when user is logged out
-            if($this->view->UserAttemptedLogin() && $this->view->FormIsCorrect()){
+            if($this->view->UserAttemptedLogin()){
 
-                if($this->model->AuthenticateLogin($this->view->GetUsername(), $this->view->GetPassword())){
+                if($this->model->AuthenticateLogin($this->view->GetUserCredentials())){
                     $this->model->LoginUser($this->view->GetClientIdentifier());
-
-                    if($this->view->KeepUserLoggedIn()){
-
-                        $this->persistent_login_view->storeLogin($this->model->GeneratePersistentLogin($this->view->GetUsername()));
-
-                        $this->view->SetPersistentLoginMessage();
-                    }else{
-                        $this->view->SetLoginMessage();
-                    }
-
-                    $this->view->ReloadPage();
-                }
-
-            }elseif($this->persistent_login_view->userHasPersistentLogin()){
-
-                if($this->model->AuthenticatePersistentLogin($this->persistent_login_view->getCookieUsername(), $this->persistent_login_view->getCookieSecurityString())){
-                    $this->model->LoginUser($this->view->GetClientIdentifier());
-                    $this->view->SetWelcomeBackMessage();
-
+                    $this->view->LoginSuccess();
                 }else{
-
-                    $this->LogoutUser();
-                    $this->view->SetWrongCookieMessage();
+                    $this->view->LoginFailed();
                 }
-
-                $this->view->ReloadPage();
 
             }
         }
 
-        if($ret->authenticated = $this->model->IsLoggedIn($this->view->GetClientIdentifier())){
-            $ret->body = $this->view->GenerateLogoutForm();
-
-        }else{
-            $ret->body = $this->view->GenerateLoginForm();
-        }
+        $ret->body = $this->view->GetForm();
 
         return $ret;
     }
 
-    private function LogoutUser(){
-        $this->model->LogoutUser();
-        $this->persistent_login_view->removePersistentLogin();
-        $this->view->SetLogoutMessage();
-    }
 }

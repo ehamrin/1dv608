@@ -25,8 +25,8 @@ class PersistentLoginDAL
     public function MatchRecord($user, $passPhrase){
         $file_handle = fopen(self::$logfile, "r");
         while (!feof($file_handle)) {
-            $line = fgets($file_handle);
-            $data = explode(self::$dataDelimiter, $line);
+
+            $data = explode(self::$dataDelimiter, fgets($file_handle));
 
             if($data[self::$username] == $user && $data[self::$passPhrase] == $passPhrase && $data[self::$expiration] > time()){
                 fclose($file_handle);
