@@ -4,7 +4,7 @@
 namespace model\dal;
 
 
-class Login
+class PersistentLogin
 {
     private static $logfile = LOG_FILE_DIR . "persistent_authentication.log";
 
@@ -13,7 +13,7 @@ class Login
     private static $expiration = 2;
     private static $dataDelimiter = ';';
 
-    public function recordPersistentAuthentication(\model\PersistentLogin $credentials){
+    public function log(\model\PersistentLogin $credentials){
 
         $file_handle = fopen(self::$logfile, 'a');
         $stringData = implode(self::$dataDelimiter, [self::$username => $credentials->user, self::$securityString => $credentials->securityString, self::$expiration => $credentials->expiration]);
@@ -21,7 +21,7 @@ class Login
         fclose($file_handle);
     }
 
-    public function matchPersistentAuthentication($user, $securityStringCookie){
+    public function matchRecord($user, $securityStringCookie){
         $file_handle = fopen(self::$logfile, "r");
         while (!feof($file_handle)) {
             $line = fgets($file_handle);

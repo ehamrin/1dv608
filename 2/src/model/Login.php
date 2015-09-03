@@ -13,10 +13,10 @@ class Login
 
     private static $sessionLocation = "\\Model\\Login::Logged_In";
 
-    private $dal;
+    private $p_dal;
 
     public function __construct(){
-        $this->dal = new dal\Login();
+        $this->p_dal = new dal\PersistentLogin();
     }
 
     public function isLoggedIn($clientIdentifier)
@@ -35,21 +35,21 @@ class Login
     }
 
     public function authenticatePersistentLogin($username, $cookieString){
-        return $this->dal->matchPersistentAuthentication($username, $cookieString);
+        return $this->p_dal->matchRecord($username, $cookieString);
     }
 
     public function generatePersistentLogin($user){
 
         $login = new PersistentLogin($user);
 
-        $this->dal->recordPersistentAuthentication($login);
+        $this->p_dal->log($login);
 
         return $login;
     }
 
     public function matchPersistentLogin($user, $securityString){
 
-        return $this->dal->matchPersistentAuthentication($user, $securityString);
+        return $this->p_dal->matchRecord($user, $securityString);
     }
 
     public function loginUser($clientIdentifier){
