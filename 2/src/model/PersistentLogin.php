@@ -16,7 +16,7 @@ class PersistentLogin
 
     public function __construct($user){
         $this->expiration = time() + 24*3600* self::$days;
-        $this->securityString = sha1(self::$salt . uniqid() . self::$salt);
+        $this->securityString = password_hash(self::$salt . uniqid() . self::$salt, PASSWORD_BCRYPT);
         $this->user = $user;
 
     }

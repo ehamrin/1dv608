@@ -18,12 +18,14 @@ class Login
         $ret = new \model\HTMLPage();
 
         if($this->model->isLoggedIn($this->view->getClientIdentifier())){
+            //Cases to allow when user is logged in
             if($this->view->userPressedLogout()){
                 $this->logoutUser();
                 $this->view->reloadPage();
 
             }
         }else{
+            //Cases to allow when user is logged out
             if($this->view->userAttemptedLogin() && $this->view->formIsCorrect()){
 
                 if($this->model->authenticateLogin($this->view->getUsername(), $this->view->getPassword())){

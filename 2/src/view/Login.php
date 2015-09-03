@@ -43,15 +43,15 @@ class Login
     }
 
     public function getUsername(){
-        return $_POST[self::$formUser];
+        return isset($_POST[self::$formUser]) ? $_POST[self::$formUser] : '';
     }
 
     public function getPassword(){
-        return $_POST[self::$formPassword];
+        return isset($_POST[self::$formPassword]) ? $_POST[self::$formPassword] : '';
     }
 
     public function keepUserLoggedIn(){
-        return $_POST[self::$formKeep];
+        return isset($_POST[self::$formKeep]) ? $_POST[self::$formKeep] : '';
     }
 
     public function getCookieUsername(){
@@ -68,11 +68,6 @@ class Login
 
     public function generateLoginForm(){
 
-        $username = null;
-
-        if($this->userAttemptedLogin()){
-            $username = $_POST[self::$formUser];
-        }
 
         return '
         <form method="post" >
@@ -81,7 +76,7 @@ class Login
                 <p id="' . self::$formMessage . '">' . $this->message . CookieMessage::Retrieve() . '</p>
 
                 <label for="' . self::$formUser . '">Username :</label>
-                <input type="text" id="' . self::$formUser . '" name="' . self::$formUser . '" value="' . $username . '" />
+                <input type="text" id="' . self::$formUser . '" name="' . self::$formUser . '" value="' . $this->getUsername() . '" />
 
                 <label for="' . self::$formPassword . '">Password :</label>
                 <input type="password" id="' . self::$formPassword . '" name="' . self::$formPassword . '" />

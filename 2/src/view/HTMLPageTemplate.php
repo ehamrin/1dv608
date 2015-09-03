@@ -28,7 +28,7 @@ class HTMLPageTemplate
 
     private function renderDate(){
         $d = new \DateTime('now');
-        return "<p>{$d->format('l')}, the {$d->format('j')}th of {$d->format('F')} {$d->format('Y')}. The time is {$d->format('G')}:{$d->format('i')}:{$d->format('s')}</p>";
+        return "<p>{$d->format('l')}, the {$d->format('jS')} of {$d->format('F')} {$d->format('Y')}, The time is {$d->format('G')}:{$d->format('i')}:{$d->format('s')}</p>";
     }
 
     private function renderIsLoggedIn($isLoggedIn) {
