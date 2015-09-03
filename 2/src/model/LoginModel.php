@@ -4,19 +4,19 @@
 namespace model;
 
 
-class Login
+class LoginModel
 {
     //User credentials
     private static $username = "Admin";
     private static $password = "Password";
 
 
-    private static $sessionLocation = "\\Model\\Login::Logged_In";
+    private static $sessionLocation = "\\Model\\LoginView::Logged_In";
 
     private $p_dal;
 
     public function __construct(){
-        $this->p_dal = new dal\PersistentLogin();
+        $this->p_dal = new dal\PersistentLoginDAL();
     }
 
     public function isLoggedIn($clientIdentifier)
@@ -40,7 +40,7 @@ class Login
 
     public function generatePersistentLogin($user){
 
-        $login = new PersistentLogin($user);
+        $login = new PersistentLoginModel($user);
 
         $this->p_dal->log($login);
 

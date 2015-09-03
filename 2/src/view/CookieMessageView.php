@@ -4,16 +4,16 @@
 namespace view;
 
 
-class CookieMessage
+class CookieMessageView
 {
-    private static $locationName = "CookieMessage";
+    private static $locationName = "CookieMessageView";
 
     public static function Set($message){
 
         $number_of_days = 30;
         $date_of_expiry = time() + 60 * 60 * 24 * $number_of_days;
 
-        CookieStorage::Set(self::$locationName, $message, $date_of_expiry);
+        CookieStorageView::Set(self::$locationName, $message, $date_of_expiry);
 
     }
 
@@ -24,7 +24,7 @@ class CookieMessage
             $message = $_COOKIE[self::$locationName];
         }
 
-        CookieStorage::Delete(self::$locationName);
+        CookieStorageView::Delete(self::$locationName);
 
         return $message;
     }

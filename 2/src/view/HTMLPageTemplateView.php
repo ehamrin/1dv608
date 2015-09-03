@@ -4,15 +4,15 @@
 namespace view;
 
 
-class HTMLPageTemplate
+class HTMLPageTemplateView
 {
-    public function Render(\model\HTMLPage $output){
+    public function Render(\model\HTMLPageModel $output){
 
     echo '<!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Login Example</title>
+    <title>LoginView Example</title>
   </head>
   <body>
     <h1>' . $output->header . '</h1>

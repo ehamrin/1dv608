@@ -4,7 +4,7 @@
 namespace view;
 
 
-class CookieStorage
+class CookieStorageView
 {
     public static function Set($cookieName, $value, $expiration){
         setcookie($cookieName, $value, $expiration);

@@ -4,9 +4,9 @@
 namespace view;
 
 
-class Login
+class LoginView
 {
-    private static $formLogin = "LoginView::Login";
+    private static $formLogin = "LoginView::LoginView";
     private static $formLogout = "LoginView::Logout";
     private static $formUser = "LoginView::UserName";
     private static $formPassword = "LoginView::Password";
@@ -21,7 +21,6 @@ class Login
         return isset($_POST[self::$formLogin]);
     }
 
-    //TODO refactor to model??
     public function formIsCorrect(){
         if(empty($_POST[self::$formUser])){
             $this->message = "Username is missing";
@@ -73,8 +72,8 @@ class Login
         return '
         <form method="post" >
             <fieldset>
-                <legend>Login - enter Username and password</legend>
-                <p id="' . self::$formMessage . '">' . $this->message . CookieMessage::Retrieve() . '</p>
+                <legend>LoginView - enter Username and password</legend>
+                <p id="' . self::$formMessage . '">' . $this->message . CookieMessageView::Retrieve() . '</p>
 
                 <label for="' . self::$formUser . '">Username :</label>
                 <input type="text" id="' . self::$formUser . '" name="' . self::$formUser . '" value="' . $this->getUsername() . '" />
@@ -93,32 +92,31 @@ class Login
     public function generateLogoutForm(){
         return '
         <form  method="post" >
-				<p id="' . self::$formMessage . '">' . CookieMessage::Retrieve() .'</p>
+				<p id="' . self::$formMessage . '">' . CookieMessageView::Retrieve() .'</p>
 				<input type="submit" name="' . self::$formLogout . '" value="logout"/>
 			</form>
         ';
     }
 
-    //TODO Possible refactor to setMessage($message)??
 
     public function setLoginMessage(){
-        CookieMessage::Set("Welcome");
+        CookieMessageView::Set("Welcome");
     }
 
     public function setLogoutMessage(){
-        CookieMessage::Set("Bye bye!");
+        CookieMessageView::Set("Bye bye!");
     }
 
     public function setPersistentLoginMessage(){
-        CookieMessage::Set("Welcome and you will be remembered");
+        CookieMessageView::Set("Welcome and you will be remembered");
     }
 
     public function setWelcomeBackMessage(){
-        CookieMessage::Set("Welcome back with cookie");
+        CookieMessageView::Set("Welcome back with cookie");
     }
 
     public function setWrongCookieMessage(){
-        CookieMessage::Set("Wrong information in cookies");
+        CookieMessageView::Set("Wrong information in cookies");
     }
 
     public function reloadPage(){
@@ -127,20 +125,20 @@ class Login
         die();
     }
 
-    //TODO Refactor to PersistentLogin View class
+    //TODO Refactor to PersistentLoginModel View class
     public function userHasPersistentLogin(){
         return isset($_COOKIE[self::$cookieName], $_COOKIE[self::$cookiePassword]);
     }
 
-    public function storeLogin(\model\PersistentLogin $credentials){
-        CookieStorage::Set(self::$cookieName, $credentials->user, $credentials->expiration);
-        CookieStorage::Set(self::$cookiePassword, $credentials->securityString, $credentials->expiration);
+    public function storeLogin(\model\PersistentLoginModel $credentials){
+        CookieStorageView::Set(self::$cookieName, $credentials->user, $credentials->expiration);
+        CookieStorageView::Set(self::$cookiePassword, $credentials->securityString, $credentials->expiration);
     }
 
     public function removePersistentLogin(){
 
-        CookieStorage::Delete(self::$cookieName);
-        CookieStorage::Delete(self::$cookiePassword);
+        CookieStorageView::Delete(self::$cookieName);
+        CookieStorageView::Delete(self::$cookiePassword);
 
     }
 }

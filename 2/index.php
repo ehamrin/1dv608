@@ -14,8 +14,8 @@ define("APPLICATION_URL", "http://1dv608.erikhamrin.se/2/");
 define("APPLICATION_URI", "/var/www/1dv608.erikhamrin.se/2/");
 define("LOG_FILE_DIR", APPLICATION_URI . "log/");
 
-$controller = new \controller\Login();
+$controller = new \controller\LoginController();
 $output = $controller->AuthenticateUser();
 
-$page = new \view\HTMLPageTemplate();
+$page = new \view\HTMLPageTemplateView();
 $page->Render($output);

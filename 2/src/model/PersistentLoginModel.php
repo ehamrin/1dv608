@@ -4,7 +4,7 @@
 namespace model;
 
 
-class PersistentLogin
+class PersistentLoginModel
 {
     public $user;
     public $securityString;

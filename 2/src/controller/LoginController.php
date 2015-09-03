@@ -4,18 +4,18 @@
 namespace controller;
 
 
-class Login
+class LoginController
 {
     private $model;
     private $view;
 
     public function __construct(){
-        $this->model = new \model\Login();
-        $this->view = new \view\Login($this->model);
+        $this->model = new \model\LoginModel();
+        $this->view = new \view\LoginView($this->model);
     }
 
     public function AuthenticateUser(){
-        $ret = new \model\HTMLPage();
+        $ret = new \model\HTMLPageModel();
 
         if($this->model->isLoggedIn($this->view->getClientIdentifier())){
             //Cases to allow when user is logged in
@@ -32,8 +32,9 @@ class Login
                     $this->model->loginUser($this->view->getClientIdentifier());
 
                     if($this->view->keepUserLoggedIn()){
-                        //TODO refactor: $this->view->storeLogin() and let view access model
+
                         $this->view->storeLogin($this->model->generatePersistentLogin($this->view->getUsername()));
+
                         $this->view->setPersistentLoginMessage();
                     }else{
                         $this->view->setLoginMessage();

@@ -4,7 +4,7 @@
 namespace model\dal;
 
 
-class PersistentLogin
+class PersistentLoginDAL
 {
     private static $logfile = LOG_FILE_DIR . "persistent_authentication.log";
 
@@ -13,10 +13,11 @@ class PersistentLogin
     private static $expiration = 2;
     private static $dataDelimiter = ';';
 
-    public function log(\model\PersistentLogin $credentials){
+    public function log(\model\PersistentLoginModel $credentials){
 
         $file_handle = fopen(self::$logfile, 'a');
-        $stringData = implode(self::$dataDelimiter, [self::$username => $credentials->user, self::$securityString => $credentials->securityString, self::$expiration => $credentials->expiration]);
+        $dataArray = [self::$username => $credentials->user, self::$securityString => $credentials->securityString, self::$expiration => $credentials->expiration];
+        $stringData = implode(self::$dataDelimiter, $dataArray);
         fwrite($file_handle, $stringData . PHP_EOL);
         fclose($file_handle);
     }
