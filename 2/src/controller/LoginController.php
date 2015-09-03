@@ -13,7 +13,6 @@ class LoginController
     }
 
     public function AuthenticateUser(){
-        $ret = new \model\ContentModel();
 
         if($this->model->IsLoggedIn($this->view->GetClientIdentifier()) == FALSE){
             if($this->view->UserAttemptedLogin()){
@@ -32,9 +31,6 @@ class LoginController
             }
         }
 
-        $ret->body = $this->view->GetForm();
-
-        return $ret;
+        return new \model\ContentModel($this->view->GetForm(), $this->model->IsLoggedIn($this->view->GetClientIdentifier()));
     }
-
 }

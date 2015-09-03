@@ -53,7 +53,9 @@ class LoginModel
     }
 
     public function LogoutUser(){
+        var_dump($_SESSION[self::$sessionLocation]);
         unset($_SESSION[self::$sessionLocation]);
+        var_dump($_SESSION[self::$sessionLocation]);
     }
 
 }

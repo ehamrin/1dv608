@@ -12,21 +12,16 @@ class LoginView
     private static $formPassword = "LoginView::Password";
     private static $formMessage = "LoginView::Message";
     private static $formKeep = "LoginView::KeepMeLoggedIn";
-
-    private $message;
-    private $persistent_login_view;
-
-
-    private $model;
-
     private static $fromForm = "Login through form";
     private static $fromCookie = "Login through cookie";
-    private $loginMethod;
 
+    private $loginMethod;
+    private $message;
+    private $persistent_login_view;
+    private $model;
 
     public function __construct(\model\LoginModel $model){
         $this->persistent_login_view = new PersistentLoginView();
-
         $this->model = $model;
     }
 
@@ -34,43 +29,12 @@ class LoginView
         return isset($_POST[self::$formLogin]) && $this->FormIsCorrect() || $this->persistent_login_view->UserHasPersistentLogin();
     }
 
-    private function FormIsCorrect(){
-        if(empty($_POST[self::$formUser])){
-            $this->message = "Username is missing";
-            return false;
-        }
-
-        if(empty($_POST[self::$formPassword])) {
-            $this->message = "Password is missing";
-            return false;
-        }
-
-        return true;
-    }
-
     public function UserPressedLogout(){
         return isset($_POST[self::$formLogout]);
     }
 
-    private function GetUsername(){
-        return isset($_POST[self::$formUser]) ? $_POST[self::$formUser] : '';
-    }
-
-    private function GetPassword(){
-        return isset($_POST[self::$formPassword]) ? $_POST[self::$formPassword] : '';
-    }
-
-    private function KeepUserLoggedIn(){
-        return isset($_POST[self::$formKeep]) ? $_POST[self::$formKeep] : '';
-    }
-
     public function GetClientIdentifier(){
         return $_SERVER['HTTP_USER_AGENT'] . $_SERVER['REMOTE_ADDR'];
-    }
-
-    public function LogoutUser(){
-        $this->persistent_login_view->RemovePersistentLogin();
-        $this->SetLogoutMessage();
     }
 
     public function GetUserCredentials(){
@@ -101,13 +65,13 @@ class LoginView
                 //TODO Don't generate login here
                 $this->persistent_login_view->StoreLogin($this->model->GetPersistentLogin($this->GetUsername()));
 
-                $this->SetPersistentLoginMessage();
+                $this->SetTemporaryMessage("Welcome and you will be remembered");
             }
-            $this->SetLoginMessage();
+            $this->SetTemporaryMessage("Welcome");
 
 
         }elseif($this->loginMethod == self::$fromCookie){
-            $this->SetWelcomeBackMessage();
+            $this->SetTemporaryMessage("Welcome back with cookie");
         }
     }
 
@@ -119,10 +83,15 @@ class LoginView
         }elseif($this->loginMethod == self::$fromCookie){
 
             $this->persistent_login_view->RemovePersistentLogin();
-            $this->SetWrongCookieMessage();
+            $this->SetTemporaryMessage("Wrong information in cookies");
 
         }
 
+    }
+
+    public function LogoutUser(){
+        $this->persistent_login_view->RemovePersistentLogin();
+        $this->SetTemporaryMessage("Bye bye!");
     }
 
     public function GetForm(){
@@ -133,10 +102,36 @@ class LoginView
         return $this->GetLoginForm();
     }
 
+    private function FormIsCorrect(){
+        if(empty($_POST[self::$formUser])){
+            $this->message = "Username is missing";
+            return false;
+        }
+
+        if(empty($_POST[self::$formPassword])) {
+            $this->message = "Password is missing";
+            return false;
+        }
+
+        return true;
+    }
+
+    private function GetUsername(){
+        return isset($_POST[self::$formUser]) ? $_POST[self::$formUser] : '';
+    }
+
+    private function GetPassword(){
+        return isset($_POST[self::$formPassword]) ? $_POST[self::$formPassword] : '';
+    }
+
+    private function KeepUserLoggedIn(){
+        return isset($_POST[self::$formKeep]) ? $_POST[self::$formKeep] : '';
+    }
+
     /**
      * @return string
      */
-    public function GetLoginForm(){
+    private function GetLoginForm(){
 
         return '
         <form method="post" >
@@ -161,7 +156,7 @@ class LoginView
     /**
      * @return string
      */
-    public function GetLogoutForm(){
+    private function GetLogoutForm(){
         return '
         <form  method="post" >
 				<p id="' . self::$formMessage . '">' . CookieMessageView::Retrieve() .'</p>
@@ -170,29 +165,8 @@ class LoginView
         ';
     }
 
-
-    public function SetLoginMessage(){
-        CookieMessageView::Set("Welcome");
-        $this->ReloadPage();
-    }
-
-    public function SetLogoutMessage(){
-        CookieMessageView::Set("Bye bye!");
-        $this->ReloadPage();
-    }
-
-    public function SetPersistentLoginMessage(){
-        CookieMessageView::Set("Welcome and you will be remembered");
-        $this->ReloadPage();
-    }
-
-    public function SetWelcomeBackMessage(){
-        CookieMessageView::Set("Welcome back with cookie");
-        $this->ReloadPage();
-    }
-
-    public function SetWrongCookieMessage(){
-        CookieMessageView::Set("Wrong information in cookies");
+    private function SetTemporaryMessage($message){
+        CookieMessageView::Set($message);
         $this->ReloadPage();
     }
 
