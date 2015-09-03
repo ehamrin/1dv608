@@ -47,9 +47,9 @@ class LoginModel
         return $login;
     }
 
-    public function matchPersistentLogin($user, $securityString){
+    public function matchPersistentLogin($user, $passPhrase){
 
-        return $this->p_dal->matchRecord($user, $securityString);
+        return $this->p_dal->matchRecord($user, $passPhrase);
     }
 
     public function loginUser($clientIdentifier){

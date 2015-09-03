@@ -7,7 +7,7 @@ namespace model;
 class PersistentLoginModel
 {
     public $user;
-    public $securityString;
+    public $passPhrase;
     public $expiration;
 
     private static $days = 10;
@@ -16,7 +16,7 @@ class PersistentLoginModel
 
     public function __construct($user){
         $this->expiration = time() + 24*3600* self::$days;
-        $this->securityString = password_hash(self::$salt . uniqid() . self::$salt, PASSWORD_BCRYPT);
+        $this->passPhrase = password_hash(self::$salt . uniqid() . self::$salt, PASSWORD_BCRYPT);
         $this->user = $user;
 
     }

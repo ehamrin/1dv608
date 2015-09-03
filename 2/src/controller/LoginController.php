@@ -8,10 +8,12 @@ class LoginController
 {
     private $model;
     private $view;
+    private $persistent_login_view;
 
     public function __construct(){
         $this->model = new \model\LoginModel();
         $this->view = new \view\LoginView($this->model);
+        $this->persistent_login_view = new \view\PersistentLoginView();
     }
 
     public function AuthenticateUser(){
@@ -33,7 +35,7 @@ class LoginController
 
                     if($this->view->keepUserLoggedIn()){
 
-                        $this->view->storeLogin($this->model->generatePersistentLogin($this->view->getUsername()));
+                        $this->persistent_login_view->storeLogin($this->model->generatePersistentLogin($this->view->getUsername()));
 
                         $this->view->setPersistentLoginMessage();
                     }else{
@@ -43,9 +45,9 @@ class LoginController
                     $this->view->reloadPage();
                 }
 
-            }elseif($this->view->userHasPersistentLogin()){
+            }elseif($this->persistent_login_view->userHasPersistentLogin()){
 
-                if($this->model->authenticatePersistentLogin($this->view->getCookieUsername(), $this->view->getCookieSecurityString())){
+                if($this->model->authenticatePersistentLogin($this->persistent_login_view->getCookieUsername(), $this->persistent_login_view->getCookieSecurityString())){
                     $this->model->loginUser($this->view->getClientIdentifier());
                     $this->view->setWelcomeBackMessage();
 
@@ -72,7 +74,7 @@ class LoginController
 
     private function logoutUser(){
         $this->model->logoutUser();
-        $this->view->removePersistentLogin();
+        $this->persistent_login_view->removePersistentLogin();
         $this->view->setLogoutMessage();
     }
 }
