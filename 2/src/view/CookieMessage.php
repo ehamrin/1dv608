@@ -13,7 +13,7 @@ class CookieMessage
         $number_of_days = 30;
         $date_of_expiry = time() + 60 * 60 * 24 * $number_of_days;
 
-        setcookie(self::$locationName, $message, $date_of_expiry );
+        CookieStorage::Set(self::$locationName, $message, $date_of_expiry);
 
     }
 
@@ -24,8 +24,7 @@ class CookieMessage
             $message = $_COOKIE[self::$locationName];
         }
 
-        unset($_COOKIE[self::$locationName]);
-        setcookie(self::$locationName,null,time()-1);
+        CookieStorage::Delete(self::$locationName);
 
         return $message;
     }

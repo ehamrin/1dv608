@@ -98,6 +98,8 @@ class Login
         ';
     }
 
+    //TODO Possible refactor to setMessage($message)??
+
     public function setLoginMessage(){
         CookieMessage::Set("Welcome");
     }
@@ -124,22 +126,20 @@ class Login
         die();
     }
 
+    //TODO Refactor to PersistentLogin View class
     public function userHasPersistentLogin(){
         return isset($_COOKIE[self::$cookieName], $_COOKIE[self::$cookiePassword]);
     }
 
     public function storeLogin(\model\PersistentLogin $credentials){
-        setcookie(self::$cookieName, $credentials->user, $credentials->expiration);
-        setcookie(self::$cookiePassword, $credentials->securityString, $credentials->expiration);
+        CookieStorage::Set(self::$cookieName, $credentials->user, $credentials->expiration);
+        CookieStorage::Set(self::$cookiePassword, $credentials->securityString, $credentials->expiration);
     }
 
     public function removePersistentLogin(){
 
-        unset($_COOKIE[self::$cookieName]);
-        setcookie(self::$cookieName, null, time()-1);
-
-        unset($_COOKIE[self::$cookiePassword]);
-        setcookie(self::$cookiePassword, null, time()-1);
+        CookieStorage::Delete(self::$cookieName);
+        CookieStorage::Delete(self::$cookiePassword);
 
     }
 }
