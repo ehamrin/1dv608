@@ -32,6 +32,7 @@ class Login
                     $this->model->loginUser($this->view->getClientIdentifier());
 
                     if($this->view->keepUserLoggedIn()){
+                        //TODO refactor: $this->view->storeLogin() and let view access model
                         $this->view->storeLogin($this->model->generatePersistentLogin($this->view->getUsername()));
                         $this->view->setPersistentLoginMessage();
                     }else{

@@ -21,6 +21,7 @@ class Login
         return isset($_POST[self::$formLogin]);
     }
 
+    //TODO refactor to model??
     public function formIsCorrect(){
         if(empty($_POST[self::$formUser])){
             $this->message = "Username is missing";
