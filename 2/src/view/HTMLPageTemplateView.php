@@ -16,22 +16,22 @@ class HTMLPageTemplateView
   </head>
   <body>
     <h1>' . $output->header . '</h1>
-    ' . $this->renderIsLoggedIn($output->authenticated) . '
+    ' . $this->RenderIsLoggedIn($output->authenticated) . '
     <div class="container">
     ' . $output->body . '
-        ' . $this->renderDate() . '
+        ' . $this->RenderDate() . '
     </div>
   </body>
 </html>';
 
     }
 
-    private function renderDate(){
+    private function RenderDate(){
         $d = new \DateTime('now');
         return "<p>{$d->format('l')}, the {$d->format('jS')} of {$d->format('F')} {$d->format('Y')}, The time is {$d->format('G')}:{$d->format('i')}:{$d->format('s')}</p>";
     }
 
-    private function renderIsLoggedIn($isLoggedIn) {
+    private function RenderIsLoggedIn($isLoggedIn) {
         if ($isLoggedIn) {
             return '<h2>Logged in</h2>';
         }

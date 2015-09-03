@@ -6,14 +6,14 @@ namespace model\dal;
 
 class PersistentLoginDAL
 {
-    private static $logfile = LOG_FILE_DIR . "persistent_authentication.log";
+    private static $logfile = LOG_FILE_DIR . "persistent_authentication.Log";
 
     private static $username = 0;
     private static $passPhrase = 1;
     private static $expiration = 2;
     private static $dataDelimiter = ';';
 
-    public function log(\model\PersistentLoginModel $credentials){
+    public function Log(\model\PersistentLoginModel $credentials){
 
         $file_handle = fopen(self::$logfile, 'a');
         $dataArray = [self::$username => $credentials->user, self::$passPhrase => $credentials->passPhrase, self::$expiration => $credentials->expiration];
@@ -22,7 +22,7 @@ class PersistentLoginDAL
         fclose($file_handle);
     }
 
-    public function matchRecord($user, $passPhrase){
+    public function MatchRecord($user, $passPhrase){
         $file_handle = fopen(self::$logfile, "r");
         while (!feof($file_handle)) {
             $line = fgets($file_handle);

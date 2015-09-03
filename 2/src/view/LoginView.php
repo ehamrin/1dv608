@@ -15,11 +15,11 @@ class LoginView
 
     private $message;
 
-    public function userAttemptedLogin(){
+    public function UserAttemptedLogin(){
         return isset($_POST[self::$formLogin]);
     }
 
-    public function formIsCorrect(){
+    public function FormIsCorrect(){
         if(empty($_POST[self::$formUser])){
             $this->message = "Username is missing";
             return false;
@@ -36,28 +36,30 @@ class LoginView
         return true;
     }
 
-    public function userPressedLogout(){
+    public function UserPressedLogout(){
         return isset($_POST[self::$formLogout]);
     }
 
-    public function getUsername(){
+    public function GetUsername(){
         return isset($_POST[self::$formUser]) ? $_POST[self::$formUser] : '';
     }
 
-    public function getPassword(){
+    public function GetPassword(){
         return isset($_POST[self::$formPassword]) ? $_POST[self::$formPassword] : '';
     }
 
-    public function keepUserLoggedIn(){
+    public function KeepUserLoggedIn(){
         return isset($_POST[self::$formKeep]) ? $_POST[self::$formKeep] : '';
     }
 
-    public function getClientIdentifier(){
+    public function GetClientIdentifier(){
         return $_SERVER['HTTP_USER_AGENT'] . $_SERVER['REMOTE_ADDR'];
     }
 
-    public function generateLoginForm(){
-
+    /**
+     * @return string
+     */
+    public function GenerateLoginForm(){
 
         return '
         <form method="post" >
@@ -66,7 +68,7 @@ class LoginView
                 <p id="' . self::$formMessage . '">' . $this->message . CookieMessageView::Retrieve() . '</p>
 
                 <label for="' . self::$formUser . '">Username :</label>
-                <input type="text" id="' . self::$formUser . '" name="' . self::$formUser . '" value="' . $this->getUsername() . '" />
+                <input type="text" id="' . self::$formUser . '" name="' . self::$formUser . '" value="' . $this->GetUsername() . '" />
 
                 <label for="' . self::$formPassword . '">Password :</label>
                 <input type="password" id="' . self::$formPassword . '" name="' . self::$formPassword . '" />
@@ -79,7 +81,10 @@ class LoginView
         </form>';
     }
 
-    public function generateLogoutForm(){
+    /**
+     * @return string
+     */
+    public function GenerateLogoutForm(){
         return '
         <form  method="post" >
 				<p id="' . self::$formMessage . '">' . CookieMessageView::Retrieve() .'</p>
@@ -89,27 +94,27 @@ class LoginView
     }
 
 
-    public function setLoginMessage(){
+    public function SetLoginMessage(){
         CookieMessageView::Set("Welcome");
     }
 
-    public function setLogoutMessage(){
+    public function SetLogoutMessage(){
         CookieMessageView::Set("Bye bye!");
     }
 
-    public function setPersistentLoginMessage(){
+    public function SetPersistentLoginMessage(){
         CookieMessageView::Set("Welcome and you will be remembered");
     }
 
-    public function setWelcomeBackMessage(){
+    public function SetWelcomeBackMessage(){
         CookieMessageView::Set("Welcome back with cookie");
     }
 
-    public function setWrongCookieMessage(){
+    public function SetWrongCookieMessage(){
         CookieMessageView::Set("Wrong information in cookies");
     }
 
-    public function reloadPage(){
+    public function ReloadPage(){
         header('Location: ' . APPLICATION_URL);
         //Force server to shut down script
         die();
