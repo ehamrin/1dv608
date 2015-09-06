@@ -19,7 +19,7 @@ class LoginModel
         $this->p_dal = new dal\PersistentLoginDAL();
     }
 
-    public function IsLoggedIn($clientIdentifier)
+    public function IsLoggedIn(\string $clientIdentifier) :bool
     {
         if(isset($_SESSION[self::$sessionLocation]) && $_SESSION[self::$sessionLocation] === $clientIdentifier){
             return true;
@@ -29,12 +29,14 @@ class LoginModel
 
     }
 
-    public function AuthenticateLogin(\model\UserCredentials $credentials){
+    public function AuthenticateLogin(\model\UserCredentials $credentials) : bool
+    {
 
         return $credentials->GetUsername() === self::$username && $credentials->GetPassword() === self::$password || $this->p_dal->MatchRecord($credentials->GetUsername(), $credentials->GetPassword());
     }
 
-    public function GetPersistentLogin($user){
+    public function GetPersistentLogin(\string $user) : PersistentLoginModel
+    {
 
         $login = new PersistentLoginModel($user);
 
@@ -43,19 +45,20 @@ class LoginModel
         return $login;
     }
 
-    public function MatchPersistentLogin($user, $passPhrase){
+    public function MatchPersistentLogin(\string $user, \string $passPhrase) : bool
+    {
 
         return $this->p_dal->MatchRecord($user, $passPhrase);
     }
 
-    public function LoginUser($clientIdentifier){
+    public function LoginUser(\string $clientIdentifier)
+    {
         $_SESSION[self::$sessionLocation] = $clientIdentifier;
     }
 
-    public function LogoutUser(){
-        var_dump($_SESSION[self::$sessionLocation]);
+    public function LogoutUser()
+    {
         unset($_SESSION[self::$sessionLocation]);
-        var_dump($_SESSION[self::$sessionLocation]);
     }
 
 }

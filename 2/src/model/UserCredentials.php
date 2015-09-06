@@ -9,7 +9,7 @@ class UserCredentials
     private $username;
     private $password;
 
-    public function __construct($username, $password){
+    public function __construct(\string $username, \string $password){
         if(empty($username)){
             throw new \InvalidArgumentException("Username must be set");
         }
@@ -20,11 +20,13 @@ class UserCredentials
         $this->password = $password;
     }
 
-    public function GetUsername(){
+    public function GetUsername() : string
+    {
         return $this->username;
     }
 
-    public function GetPassword(){
+    public function GetPassword() : string
+    {
         return $this->password;
     }
 }

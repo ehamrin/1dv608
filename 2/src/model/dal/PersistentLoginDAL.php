@@ -13,7 +13,8 @@ class PersistentLoginDAL
     private static $expiration = 2;
     private static $dataDelimiter = ';';
 
-    public function Log(\model\PersistentLoginModel $credentials){
+    public function Log(\model\PersistentLoginModel $credentials)
+    {
 
         $file_handle = fopen(self::$logfile, 'a');
         $dataArray = [self::$username => $credentials->user, self::$passPhrase => $credentials->passPhrase, self::$expiration => $credentials->expiration];
@@ -22,7 +23,7 @@ class PersistentLoginDAL
         fclose($file_handle);
     }
 
-    public function MatchRecord($user, $passPhrase){
+    public function MatchRecord(\string $user, \string $passPhrase) : bool{
         $file_handle = fopen(self::$logfile, "r");
         while (!feof($file_handle)) {
 

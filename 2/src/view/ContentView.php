@@ -4,11 +4,12 @@
 namespace view;
 
 
-class HTMLPageTemplateView
+class ContentView
 {
-    public function Render(\model\ContentModel $output){
+    public function Render(\model\ContentModel $output) : \string
+    {
 
-    echo '<!DOCTYPE html>
+    return '<!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8">
@@ -26,12 +27,14 @@ class HTMLPageTemplateView
 
     }
 
-    private function RenderDate(){
+    private function RenderDate() : \string
+    {
         $d = new \DateTime('now');
         return "<p>{$d->format('l')}, the {$d->format('jS')} of {$d->format('F')} {$d->format('Y')}, The time is {$d->format('G')}:{$d->format('i')}:{$d->format('s')}</p>";
     }
 
-    private function RenderIsLoggedIn($isLoggedIn) {
+    private function RenderIsLoggedIn(bool $isLoggedIn) : \string
+    {
         if ($isLoggedIn) {
             return '<h2>Logged in</h2>';
         }

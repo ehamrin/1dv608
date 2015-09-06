@@ -12,7 +12,8 @@ class LoginController
         $this->view = new \view\LoginView($this->model);
     }
 
-    public function AuthenticateUser(){
+    public function AuthenticateUser() : \model\ContentModel
+    {
 
         if($this->model->IsLoggedIn($this->view->GetClientIdentifier()) == FALSE){
             if($this->view->UserAttemptedLogin()){
