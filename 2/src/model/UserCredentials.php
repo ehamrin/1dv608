@@ -20,12 +20,12 @@ class UserCredentials
         $this->password = $password;
     }
 
-    public function GetUsername() : string
+    public function GetUsername() : \string
     {
         return $this->username;
     }
 
-    public function GetPassword() : string
+    public function GetPassword() : \string
     {
         return $this->password;
     }

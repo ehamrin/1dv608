@@ -11,17 +11,17 @@ class PersistentLoginView
     private static $cookieName = "LoginView::CookieName";
     private static $cookiePassword = "LoginView::CookiePassword";
 
-    public function GetCookieUsername() : string
+    public function GetCookieUsername() : \string
     {
         return $_COOKIE[self::$cookieName];
     }
 
-    public function GetCookieSecurityString() : string
+    public function GetCookieSecurityString() : \string
     {
         return $_COOKIE[self::$cookiePassword];
     }
 
-    public function UserHasPersistentLogin() : bool
+    public function UserHasPersistentLogin() : \bool
     {
         return isset($_COOKIE[self::$cookieName], $_COOKIE[self::$cookiePassword]);
     }

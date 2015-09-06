@@ -19,7 +19,7 @@ class LoginModel
         $this->p_dal = new dal\PersistentLoginDAL();
     }
 
-    public function IsLoggedIn(\string $clientIdentifier) :bool
+    public function IsLoggedIn(\string $clientIdentifier) : \bool
     {
         if(isset($_SESSION[self::$sessionLocation]) && $_SESSION[self::$sessionLocation] === $clientIdentifier){
             return true;
@@ -29,7 +29,7 @@ class LoginModel
 
     }
 
-    public function AuthenticateLogin(\model\UserCredentials $credentials) : bool
+    public function AuthenticateLogin(\model\UserCredentials $credentials) : \bool
     {
 
         return $credentials->GetUsername() === self::$username && $credentials->GetPassword() === self::$password || $this->p_dal->MatchRecord($credentials->GetUsername(), $credentials->GetPassword());
@@ -45,7 +45,7 @@ class LoginModel
         return $login;
     }
 
-    public function MatchPersistentLogin(\string $user, \string $passPhrase) : bool
+    public function MatchPersistentLogin(\string $user, \string $passPhrase) : \bool
     {
 
         return $this->p_dal->MatchRecord($user, $passPhrase);

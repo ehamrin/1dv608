@@ -11,7 +11,7 @@ class ContentModel
     public $authenticated;
     public $body;
 
-    public function __construct($body, $authenticated){
+    public function __construct(\string $body, \bool $authenticated){
         $this->body = $body;
         $this->authenticated = $authenticated;
     }

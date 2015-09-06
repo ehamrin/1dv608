@@ -23,7 +23,7 @@ class PersistentLoginDAL
         fclose($file_handle);
     }
 
-    public function MatchRecord(\string $user, \string $passPhrase) : bool{
+    public function MatchRecord(\string $user, \string $passPhrase) : \bool{
         $file_handle = fopen(self::$logfile, "r");
         while (!feof($file_handle)) {
 

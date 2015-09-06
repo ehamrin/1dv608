@@ -33,7 +33,7 @@ class ContentView
         return "<p>{$d->format('l')}, the {$d->format('jS')} of {$d->format('F')} {$d->format('Y')}, The time is {$d->format('G')}:{$d->format('i')}:{$d->format('s')}</p>";
     }
 
-    private function RenderIsLoggedIn(bool $isLoggedIn) : \string
+    private function RenderIsLoggedIn(\bool $isLoggedIn) : \string
     {
         if ($isLoggedIn) {
             return '<h2>Logged in</h2>';

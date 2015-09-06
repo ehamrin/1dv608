@@ -26,17 +26,17 @@ class LoginView
         $this->model = $model;
     }
 
-    public function UserAttemptedLogin() : bool
+    public function UserAttemptedLogin() : \bool
     {
         return isset($_POST[self::$formLogin]) && $this->FormIsCorrect() || $this->persistent_login_view->UserHasPersistentLogin();
     }
 
-    public function UserPressedLogout() : bool
+    public function UserPressedLogout() : \bool
     {
         return isset($_POST[self::$formLogout]);
     }
 
-    public function GetClientIdentifier() : string
+    public function GetClientIdentifier() : \string
     {
         return $_SERVER['HTTP_USER_AGENT'] . $_SERVER['REMOTE_ADDR'];
     }
@@ -101,7 +101,7 @@ class LoginView
         $this->SetTemporaryMessage("Bye bye!");
     }
 
-    public function GetForm() : string
+    public function GetForm() : \string
     {
 
         if($this->model->IsLoggedIn($this->GetClientIdentifier())){
@@ -110,7 +110,7 @@ class LoginView
         return $this->GetLoginForm();
     }
 
-    private function FormIsCorrect() : bool
+    private function FormIsCorrect() : \bool
     {
         if(empty($_POST[self::$formUser])){
             $this->message = "Username is missing";
@@ -163,7 +163,7 @@ class LoginView
         </form>';
     }
 
-    private function GetLogoutForm() : string
+    private function GetLogoutForm() : \string
     {
         return '
         <form  method="post" >
@@ -173,7 +173,7 @@ class LoginView
         ';
     }
 
-    private function SetTemporaryMessage($message)
+    private function SetTemporaryMessage(\string $message)
     {
         CookieMessageView::Set($message);
         $this->ReloadPage();
