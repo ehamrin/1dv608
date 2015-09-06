@@ -125,22 +125,22 @@ class LoginView
         return true;
     }
 
-    private function GetUsername() : string
+    private function GetUsername() : \string
     {
-        return isset($_POST[self::$formUser]) ? $_POST[self::$formUser] : '';
+        return $_POST[self::$formUser] ?? '';
     }
 
-    private function GetPassword() : string
+    private function GetPassword() : \string
     {
-        return isset($_POST[self::$formPassword]) ? $_POST[self::$formPassword] : '';
+        return $_POST[self::$formPassword] ?? '';
     }
 
-    private function KeepUserLoggedIn() : bool
+    private function KeepUserLoggedIn() : \bool
     {
-        return isset($_POST[self::$formKeep]) ? $_POST[self::$formKeep] : '';
+        return $_POST[self::$formKeep] ?? false;
     }
 
-    private function GetLoginForm() : string
+    private function GetLoginForm() : \string
     {
 
         return '

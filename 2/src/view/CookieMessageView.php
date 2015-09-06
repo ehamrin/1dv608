@@ -18,7 +18,7 @@ class CookieMessageView
 
     }
 
-    public static function Retrieve() : string
+    public static function Retrieve() : \string
     {
         $message = "";
 
