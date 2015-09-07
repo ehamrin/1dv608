@@ -32,7 +32,7 @@ class LoginModel
     public function AuthenticateLogin(\model\UserCredentials $credentials) : \bool
     {
 
-        return $credentials->GetUsername() === self::$username && $credentials->GetPassword() === self::$password || $this->p_dal->MatchRecord($credentials->GetUsername(), $credentials->GetPassword());
+        return $credentials->GetUsername() === self::$username && $credentials->GetPassword() === self::$password || $this->p_dal->MatchRecord($credentials);
     }
 
     public function GetPersistentLogin(\string $user) : PersistentLoginModel
@@ -43,12 +43,6 @@ class LoginModel
         $this->p_dal->Log($login);
 
         return $login;
-    }
-
-    public function MatchPersistentLogin(\string $user, \string $passPhrase) : \bool
-    {
-
-        return $this->p_dal->MatchRecord($user, $passPhrase);
     }
 
     public function LoginUser(\string $clientIdentifier)

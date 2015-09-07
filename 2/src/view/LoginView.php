@@ -135,7 +135,7 @@ class LoginView
 
     private function KeepUserLoggedIn() : \bool
     {
-        return $_POST[self::$formKeep] ?? false;
+        return isset($_POST[self::$formKeep]);
     }
 
     private function GetLoginForm() : \string

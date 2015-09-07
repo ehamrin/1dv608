@@ -1,5 +1,4 @@
 <?php
-declare(strict_types=1);
 
 namespace model\dal;
 
@@ -23,13 +22,14 @@ class PersistentLoginDAL
         fclose($file_handle);
     }
 
-    public function MatchRecord(\string $user, \string $passPhrase) : \bool{
+    public function MatchRecord(\model\UserCredentials $credentials) : \bool
+    {
         $file_handle = fopen(self::$logfile, "r");
         while (!feof($file_handle)) {
 
             $data = explode(self::$dataDelimiter, fgets($file_handle));
 
-            if($data[self::$username] == $user && $data[self::$passPhrase] == $passPhrase && $data[self::$expiration] > time()){
+            if($data[self::$username] == $credentials->GetUsername() && $data[self::$passPhrase] == $credentials->GetPassword() && $data[self::$expiration] > time()){
                 fclose($file_handle);
                 return true;
             }

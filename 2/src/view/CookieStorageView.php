@@ -14,6 +14,6 @@ class CookieStorageView
     public static function Delete(\string $cookieName)
     {
         unset($_COOKIE[$cookieName]);
-        setcookie($cookieName,null,time()-1);
+        setcookie($cookieName,"",time()-1);
     }
 }
