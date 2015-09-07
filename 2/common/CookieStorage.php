@@ -1,10 +1,10 @@
 <?php
-declare(strict_types=1);
+declare(strict_types=STRICT_TYPING);
 
 namespace view;
 
 
-class CookieStorageView
+class CookieStorage
 {
     public static function Set(\string $cookieName, \string $value, \int $expiration)
     {
