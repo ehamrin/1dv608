@@ -1,6 +1,5 @@
 <?php
 session_name("PHPSESSID");
-//session_set_cookie_params(0, '/2/', '1dv608.erikhamrin.se');
 session_start();
 
 

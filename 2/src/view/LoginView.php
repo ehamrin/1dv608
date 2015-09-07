@@ -1,8 +1,7 @@
 <?php
-
+declare(strict_types=1);
 
 namespace view;
-
 
 class LoginView
 {
@@ -73,7 +72,6 @@ class LoginView
                 $this->SetTemporaryMessage("Welcome and you will be remembered");
             }
             $this->SetTemporaryMessage("Welcome");
-
 
         }elseif($this->loginMethod == self::$fromCookie){
             $this->SetTemporaryMessage("Welcome back with cookie");
