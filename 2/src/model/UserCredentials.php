@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare(strict_types=STRICT_TYPING);
 
 namespace model;
 
@@ -14,7 +14,7 @@ class UserCredentials
             throw new \InvalidArgumentException("Username must be set");
         }
         if(empty($password)){
-            throw new \InvalidArgumentException("Username must be set");
+            throw new \InvalidArgumentException("Password must be set");
         }
         $this->username = $username;
         $this->password = $password;

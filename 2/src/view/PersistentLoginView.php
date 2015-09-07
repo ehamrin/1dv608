@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare(strict_types=STRICT_TYPING);
 
 namespace view;
 
@@ -27,15 +27,15 @@ class PersistentLoginView
 
     public function StoreLogin(\model\PersistentLoginModel $credentials)
     {
-        CookieStorageView::Set(self::$cookieName, $credentials->user, $credentials->expiration);
-        CookieStorageView::Set(self::$cookiePassword, $credentials->passPhrase, $credentials->expiration);
+        CookieStorage::Set(self::$cookieName, $credentials->user, $credentials->expiration);
+        CookieStorage::Set(self::$cookiePassword, $credentials->passPhrase, $credentials->expiration);
     }
 
     public function RemovePersistentLogin()
     {
 
-        CookieStorageView::Delete(self::$cookieName);
-        CookieStorageView::Delete(self::$cookiePassword);
+        CookieStorage::Delete(self::$cookieName);
+        CookieStorage::Delete(self::$cookiePassword);
 
     }
 

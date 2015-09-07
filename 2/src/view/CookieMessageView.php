@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare(strict_types=STRICT_TYPING);
 
 namespace view;
 
@@ -14,7 +14,7 @@ class CookieMessageView
         $number_of_days = 30;
         $date_of_expiry = time() + 60 * 60 * 24 * $number_of_days;
 
-        CookieStorageView::Set(self::$locationName, $message, $date_of_expiry);
+        CookieStorage::Set(self::$locationName, $message, $date_of_expiry);
 
     }
 
@@ -26,7 +26,7 @@ class CookieMessageView
             $message = $_COOKIE[self::$locationName];
         }
 
-        CookieStorageView::Delete(self::$locationName);
+        CookieStorage::Delete(self::$locationName);
 
         return $message;
     }

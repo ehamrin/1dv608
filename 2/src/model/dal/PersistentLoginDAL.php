@@ -2,10 +2,9 @@
 
 namespace model\dal;
 
-
 class PersistentLoginDAL
 {
-    private static $logfile = LOG_FILE_DIR . "persistent_authentication.Log";
+    private static $logfile = LOG_FILE_DIR . "persistent_authentication.log";
 
     private static $username = 0;
     private static $passPhrase = 1;
@@ -22,12 +21,13 @@ class PersistentLoginDAL
         fclose($file_handle);
     }
 
-    public function MatchRecord(\model\UserCredentials $credentials) : \bool
+    public static function MatchRecord(\model\UserCredentials $credentials) : \bool
     {
         $file_handle = fopen(self::$logfile, "r");
         while (!feof($file_handle)) {
 
-            $data = explode(self::$dataDelimiter, fgets($file_handle));
+            $line = fgets($file_handle);
+            $data = explode(self::$dataDelimiter, $line);
 
             if($data[self::$username] == $credentials->GetUsername() && $data[self::$passPhrase] == $credentials->GetPassword() && $data[self::$expiration] > time()){
                 fclose($file_handle);

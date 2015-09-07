@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare(strict_types=STRICT_TYPING);
 
 namespace controller;
 
@@ -27,7 +27,7 @@ class LoginController
                 }
             }
         }else{
-            if($this->view->UserPressedLogout()){
+            if($this->view->UserAttemptedLogout()){
                 $this->model->LogoutUser();
                 $this->view->LogoutUser();
             }

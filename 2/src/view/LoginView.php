@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare(strict_types=STRICT_TYPING);
 
 namespace view;
 
@@ -30,7 +30,7 @@ class LoginView
         return isset($_POST[self::$formLogin]) && $this->FormIsCorrect() || $this->persistent_login_view->UserHasPersistentLogin();
     }
 
-    public function UserPressedLogout() : \bool
+    public function UserAttemptedLogout() : \bool
     {
         return isset($_POST[self::$formLogout]);
     }

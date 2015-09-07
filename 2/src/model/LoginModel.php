@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare(strict_types=STRICT_TYPING);
 
 namespace model;
 
@@ -11,48 +11,35 @@ class LoginModel
     private static $password = "Password";
 
 
-    private static $sessionLocation = "\\Model\\LoginView::Logged_In";
-
-    private $p_dal;
+    private $dal;
 
     public function __construct(){
-        $this->p_dal = new dal\PersistentLoginDAL();
+        $this->dal = new dal\LoginDAL("");
     }
 
     public function IsLoggedIn(\string $clientIdentifier) : \bool
     {
-        if(isset($_SESSION[self::$sessionLocation]) && $_SESSION[self::$sessionLocation] === $clientIdentifier){
-            return true;
-        }
-
-        return false;
-
+        return ($this->dal->Get() === $clientIdentifier);
     }
 
     public function AuthenticateLogin(\model\UserCredentials $credentials) : \bool
     {
-
-        return $credentials->GetUsername() === self::$username && $credentials->GetPassword() === self::$password || $this->p_dal->MatchRecord($credentials);
+        return $credentials->GetUsername() === self::$username && $credentials->GetPassword() === self::$password || dal\PersistentLoginDAL::MatchRecord($credentials);
     }
 
     public function GetPersistentLogin(\string $user) : PersistentLoginModel
     {
-
-        $login = new PersistentLoginModel($user);
-
-        $this->p_dal->Log($login);
-
-        return $login;
+        return new PersistentLoginModel($user);
     }
 
     public function LoginUser(\string $clientIdentifier)
     {
-        $_SESSION[self::$sessionLocation] = $clientIdentifier;
+        $this->dal->Save($clientIdentifier);
     }
 
     public function LogoutUser()
     {
-        unset($_SESSION[self::$sessionLocation]);
+        $this->dal->Remove();
     }
 
 }
