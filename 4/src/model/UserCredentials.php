@@ -8,16 +8,28 @@ class UserCredentials
 {
     private $username;
     private $password;
+    private $uniqueClientIdentifier;
 
-    public function __construct(\string $username, \string $password){
+    public function __construct(\string $username, \string $password, \string $unique = null){
         if(empty($username)){
-            throw new \InvalidArgumentException("Username must be set");
+            throw new \UsernameMissingException("Username must be set");
         }
+
+        if(strlen($username) < 3){
+            throw new \UsernameTooShortException("Username is too short");
+        }
+
         if(empty($password)){
-            throw new \InvalidArgumentException("Password must be set");
+            throw new \PasswordMissingException("Password must be set");
         }
+
+        if(strlen($password) < 6){
+            throw new \PasswordTooShortException("Password is too short");
+        }
+
         $this->username = $username;
         $this->password = $password;
+        $this->uniqueClientIdentifier = $unique;
     }
 
     public function GetUsername() : \string
@@ -28,5 +40,10 @@ class UserCredentials
     public function GetPassword() : \string
     {
         return $this->password;
+    }
+
+    public function GetUniqueClientIdentifier() : \string
+    {
+        return $this->uniqueClientIdentifier;
     }
 }

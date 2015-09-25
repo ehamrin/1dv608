@@ -8,12 +8,12 @@ abstract class SessionStorage
 {
     private static $sessionLocation = "\\Model\\DAL\\SessionStorage";
 
-    public function Get() : \string
+    public function Get()
     {
-        return $_SESSION[self::$sessionLocation] ?? "";
+        return $_SESSION[self::$sessionLocation] ?? null;
     }
 
-    public function Save(\string $identifier){
+    public function Save($identifier){
         $_SESSION[self::$sessionLocation] = $identifier;
     }
 

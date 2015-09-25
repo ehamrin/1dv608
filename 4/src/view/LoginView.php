@@ -58,7 +58,7 @@ class LoginView
             $this->loginMethod = self::$fromCookie;
         }
 
-        return new \model\UserCredentials($username, $password);
+        return new \model\UserCredentials($username, $password, $this->GetClientIdentifier());
     }
 
 
@@ -110,13 +110,17 @@ class LoginView
 
     private function FormIsCorrect() : \bool
     {
-        if(empty($_POST[self::$formUser])){
+        try{
+            new \model\UserCredentials($_POST[self::$formUser], $_POST[self::$formPassword]);
+
+        }catch(\UsernameMissingException $e){
             $this->message = "Username is missing";
             return false;
-        }
-
-        if(empty($_POST[self::$formPassword])) {
+        }catch(\PasswordMissingException $e){
             $this->message = "Password is missing";
+            return false;
+        }catch(\Exception $e){
+            $this->message = "Wrong name or password";
             return false;
         }
 

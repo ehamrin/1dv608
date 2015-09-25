@@ -20,7 +20,6 @@ class LoginController
             if($this->view->UserAttemptedLogin()){
 
                 if($this->model->AuthenticateLogin($this->view->GetUserCredentials())){
-                    $this->model->LoginUser($this->view->GetClientIdentifier());
                     $this->view->LoginSuccess();
                 }else{
                     $this->view->LoginFailed();

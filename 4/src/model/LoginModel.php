@@ -6,25 +6,39 @@ namespace model;
 
 class LoginModel
 {
-    //User credentials
-    private static $username = "Admin";
-    private static $password = "Password";
-
-
     private $dal;
+    private $userDal;
 
     public function __construct(){
-        $this->dal = new dal\LoginDAL("");
+        $this->dal = new dal\LoginDAL();
+        $this->userDal = new dal\UserDAL();
     }
 
     public function IsLoggedIn(\string $clientIdentifier) : \bool
     {
-        return ($this->dal->Get() === $clientIdentifier);
+        $uc = $this->dal->Get();
+        if($uc != null){
+            $uc = unserialize($uc);
+            return ($uc->GetUniqueClientIdentifier() === $clientIdentifier);
+        }
+        return false;
     }
-
     public function AuthenticateLogin(\model\UserCredentials $credentials) : \bool
     {
-        return $credentials->GetUsername() === self::$username && $credentials->GetPassword() === self::$password || dal\PersistentLoginDAL::MatchRecord($credentials);
+        foreach($this->userDal->GetAllUsers() as $entry){
+            /* @var $entry \model\UserCredentials */
+            if($entry->GetUsername() == $credentials->GetUsername() && password_verify($credentials->GetPassword(), $entry->GetPassword())){
+                $this->LoginUser($credentials);
+                return true;
+            }
+        }
+
+        if(dal\PersistentLoginDAL::MatchRecord($credentials)){
+            $this->LoginUser($credentials);
+            return true;
+        }
+
+        return false;
     }
 
     public function GetPersistentLogin(\string $user) : PersistentLoginModel
@@ -32,9 +46,9 @@ class LoginModel
         return new PersistentLoginModel($user);
     }
 
-    public function LoginUser(\string $clientIdentifier)
+    public function LoginUser(\model\UserCredentials $credentials)
     {
-        $this->dal->Save($clientIdentifier);
+        $this->dal->Save(serialize($credentials));
     }
 
     public function LogoutUser()
