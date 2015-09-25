@@ -56,4 +56,30 @@ class LoginModel
         $this->dal->Remove();
     }
 
+    public function UserExists(UserCredentials $uc){
+        foreach($this->userDal->GetAllUsers() as $entry){
+            /* @var $entry \model\UserCredentials */
+            if($entry->GetUsername() == $uc->GetUsername()) {
+
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function RegisterUser(UserCredentials $uc) : \bool
+    {
+        foreach($this->userDal->GetAllUsers() as $entry){
+            /* @var $entry \model\UserCredentials */
+            if($entry->GetUsername() == $uc->GetUsername()) {
+
+                return false;
+            }
+        }
+
+        $this->userDal->Add($uc);
+
+        return true;
+    }
+
 }

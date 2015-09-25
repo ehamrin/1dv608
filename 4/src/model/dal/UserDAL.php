@@ -25,4 +25,10 @@ class UserDAL
         }
         return $ret;
     }
+
+    public function Add(\model\UserCredentials $uc)
+    {
+        $stmt = $this->db->prepare("INSERT INTO user (username, password) VALUES(?,?)");
+        $stmt->execute(array($uc->GetUsername(), $uc->GetHashedPassword()));
+    }
 }

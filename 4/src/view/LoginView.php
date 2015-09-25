@@ -18,11 +18,13 @@ class LoginView
     private $message;
     private $persistent_login_view;
     private $model;
+    private $nv;
 
-    public function __construct(\model\LoginModel $model)
+    public function __construct(\model\LoginModel $model, NavigationView $nv)
     {
         $this->persistent_login_view = new PersistentLoginView();
         $this->model = $model;
+        $this->nv = $nv;
     }
 
     public function UserAttemptedLogin() : \bool
@@ -110,15 +112,19 @@ class LoginView
 
     private function FormIsCorrect() : \bool
     {
-        try{
-            new \model\UserCredentials($_POST[self::$formUser], $_POST[self::$formPassword]);
-
-        }catch(\UsernameMissingException $e){
+        if(empty($this->GetUsername())){
             $this->message = "Username is missing";
             return false;
-        }catch(\PasswordMissingException $e){
+        }
+
+        if(empty($this->GetPassword())){
             $this->message = "Password is missing";
             return false;
+        }
+
+        try{
+            new \model\UserCredentials($this->GetUsername(), $this->GetPassword());
+
         }catch(\Exception $e){
             $this->message = "Wrong name or password";
             return false;
@@ -129,7 +135,17 @@ class LoginView
 
     private function GetUsername() : \string
     {
-        return $_POST[self::$formUser] ?? '';
+        if(isset($_POST[self::$formUser])){
+            return $_POST[self::$formUser];
+        }
+
+        return RegistrationCookiePersistance::Retrieve();
+    }
+
+    public function RegistrationSuccess(\model\UserCredentials $uc){
+        RegistrationCookiePersistance::Set($uc->GetUsername());
+        $this->SetTemporaryMessage("Registered new user.");
+        $this->ReloadPage();
     }
 
     private function GetPassword() : \string
@@ -144,8 +160,7 @@ class LoginView
 
     private function GetLoginForm() : \string
     {
-
-        return '
+        return $this->nv->GetRegistrationLink() . '
         <form method="post" >
             <fieldset>
                 <legend>LoginView - enter Username and password</legend>
