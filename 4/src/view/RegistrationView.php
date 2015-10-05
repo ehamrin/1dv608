@@ -15,7 +15,7 @@ class RegistrationView
     private static $formPassword = "RegisterView::Password";
     private static $formConfirmPassword = "RegisterView::PasswordRepeat";
     private static $formMessage = "RegisterView::Message";
-    private static $formRegister = "LoginView::Login";
+    private static $formRegister = "RegisterView::Register";
 
     public function __construct(\model\LoginModel $lm, NavigationView $nav){
         $this->nv = $nav;
@@ -56,29 +56,31 @@ class RegistrationView
 
     private function FormIsCorrect() : \bool
     {
+
         try{
+            if(empty($this->GetUsername()) && empty($this->GetPassword())){
+                $this->message = "Username has too few characters, at least 3 characters. Password has too few characters, at least 6 characters.";
+                return false;
+            }
+
             $uc = new \model\UserCredentials($this->GetUsername(), $this->GetPassword());
 
             if($this->model->UserExists($uc)){
                 $this->message = "User exists, pick another username.";
                 return false;
             }
+            return true;
 
         }catch(\PasswordTooShortException $e){
             $this->message = "Password has too few characters, at least 6 characters.";
-            return false;
         }catch(\UsernameTooShortException $e){
             $this->message = "Username has too few characters, at least 3 characters.";
-            return false;
         }catch(\PasswordMismatchException $e){
             $this->message = "Passwords do not match.";
-            return false;
         }catch(\UsernameInvalidException $e){
             $this->message = "Username contains invalid characters.";
-            return false;
         }
-
-        return true;
+        return false;
     }
 
     private function GetPassword() : \string
@@ -92,7 +94,7 @@ class RegistrationView
 
     private function GetSanitizedUsername() : \string
     {
-        return str_replace(array('<a>', '</a>', '<br/>'), '', $this->GetUsername());
+        return htmlentities(strip_tags(str_replace(array('<a', 'a>', '<', '>', '/', ':', ';', '\\', '.', ','), '', $this->GetUsername())));
     }
 
     private function GetUsername() : \string

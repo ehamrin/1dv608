@@ -11,12 +11,13 @@ class UserCredentials
     private $uniqueClientIdentifier;
 
     public function __construct(\string $username, \string $password, \string $unique = null){
-        if(empty($password)){
-            throw new \PasswordMissingException("Password must be set");
-        }
 
         if(empty($username)){
             throw new \UsernameMissingException("Username must be set");
+        }
+
+        if(empty($password)){
+            throw new \PasswordMissingException("Password must be set");
         }
 
         if(strlen($password) < 6){
