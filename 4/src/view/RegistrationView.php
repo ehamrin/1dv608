@@ -6,7 +6,7 @@ namespace view;
 
 class RegistrationView
 {
-    private $nv;
+    private $navigationView;
     private $model;
 
     private $message = "";
@@ -18,7 +18,7 @@ class RegistrationView
     private static $formRegister = "RegisterView::Register";
 
     public function __construct(\model\RegistrationModel $model, NavigationView $nav){
-        $this->nv = $nav;
+        $this->navigationView = $nav;
         $this->model = $model;
     }
 
@@ -31,12 +31,12 @@ class RegistrationView
     {
         RegistrationCookiePersistance::Set($this->GetUsername());
         CookieMessageView::Set("Registered new user.");
-        $this->nv->GoToLogin();
+        $this->navigationView->GoToLogin();
     }
 
     public function GetView() : \string
     {
-        return $this->nv->GetBackLink() . '
+        return $this->navigationView->GetBackLink() . '
         <h2>Register new user</h2>
         <form method="post" >
             <fieldset>

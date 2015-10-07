@@ -112,25 +112,17 @@ class LoginView
 
     private function FormIsCorrect() : \bool
     {
-        if(empty($this->GetUsername())){
-            $this->message = "Username is missing";
-            return false;
-        }
-
-        if(empty($this->GetPassword())){
-            $this->message = "Password is missing";
-            return false;
-        }
-
         try{
             new \model\UserCredentials($this->GetUsername(), $this->GetPassword());
-
+            return true;
+        }catch(\PasswordTooShortException $e){
+            $this->message = "Password is missing";
+        }catch(\UsernameTooShortException $e){
+            $this->message = "Username is missing";
         }catch(\Exception $e){
             $this->message = "Wrong name or password";
-            return false;
         }
-
-        return true;
+        return false;
     }
 
     private function GetUsername() : \string
