@@ -32,7 +32,8 @@ class UserDAL
         $stmt->execute(array($uc->GetUsername(), $uc->GetHashedPassword()));
     }
 
-    public function UserExists(\model\UserCredentials $uc){
+    public function UserExists(\model\UserCredentials $uc) : \bool
+    {
         foreach($this->GetAllUsers() as $entry){
             /* @var $entry \model\UserCredentials */
             if($entry->GetUsername() == $uc->GetUsername()) {

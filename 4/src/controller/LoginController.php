@@ -15,7 +15,7 @@ class LoginController
         $this->view = $lv;
     }
 
-    public function DoLogin()
+    public function DoLogin(&$authenticated)
     {
         if($this->model->IsLoggedIn($this->view->GetClientIdentifier()) == FALSE){
             if($this->view->UserAttemptedLogin()){
@@ -32,7 +32,7 @@ class LoginController
             }
         }
 
-        return $this->model->IsLoggedIn($this->view->GetClientIdentifier());
+        $authenticated = $this->model->IsLoggedIn($this->view->GetClientIdentifier());
     }
 
     public function GetView(){

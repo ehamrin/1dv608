@@ -22,26 +22,23 @@ class MasterController
         $this->registerView = new \view\RegistrationView($this->registerModel, $this->navigationView);
     }
 
-    public function handleInput() {
+    public function handleInput(\bool &$authenticated) {
 
         $login = new LoginController($this->navigationView, $this->loginModel, $this->lv);
         $registration = new RegistrationController($this->navigationView, $this->registerView, $this->registerModel);
 
-        $authenticated = false;
-
         if ($this->navigationView->inRegistration() ) {
             if($registration->doRegister()){
-                $authenticated = $login->DoLogin();
+                $login->DoLogin($authenticated);
                 $this->view = $login->GetView();
             }else{
                 $this->view = $registration->GetView();
             }
         } else {
-            $authenticated = $login->DoLogin();
+            $login->DoLogin($authenticated);
             $this->view = $login->GetView();
         }
 
-        return $authenticated;
     }
 
     public function generateOutput() {
