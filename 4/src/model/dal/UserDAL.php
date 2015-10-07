@@ -31,4 +31,14 @@ class UserDAL
         $stmt = $this->db->prepare("INSERT INTO user (username, password) VALUES(?,?)");
         $stmt->execute(array($uc->GetUsername(), $uc->GetHashedPassword()));
     }
+
+    public function UserExists(\model\UserCredentials $uc){
+        foreach($this->GetAllUsers() as $entry){
+            /* @var $entry \model\UserCredentials */
+            if($entry->GetUsername() == $uc->GetUsername()) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

@@ -17,17 +17,24 @@ class RegistrationView
     private static $formMessage = "RegisterView::Message";
     private static $formRegister = "RegisterView::Register";
 
-    public function __construct(\model\LoginModel $lm, NavigationView $nav){
+    public function __construct(\model\RegistrationModel $model, NavigationView $nav){
         $this->nv = $nav;
-        $this->model = $lm;
+        $this->model = $model;
     }
 
-    public function UserAttemptedRegistration() : \bool
+    public function UserSubmittedRegistration() : \bool
     {
         return isset($_POST[self::$formRegister]) && $this->FormIsCorrect();
     }
 
-    public function GetForm() : \string
+    public function RegistrationSuccess()
+    {
+        RegistrationCookiePersistance::Set($this->GetUsername());
+        CookieMessageView::Set("Registered new user.");
+        $this->nv->GoToLogin();
+    }
+
+    public function GetView() : \string
     {
         return $this->nv->GetBackLink() . '
         <h2>Register new user</h2>

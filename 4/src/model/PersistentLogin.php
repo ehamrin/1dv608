@@ -4,7 +4,7 @@ declare(strict_types=STRICT_TYPING);
 namespace model;
 
 
-class PersistentLoginModel
+class PersistentLogin
 {
     public $user;
     public $passPhrase;

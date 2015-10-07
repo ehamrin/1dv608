@@ -6,67 +6,36 @@ namespace controller;
 class LoginController
 {
     private $model;
-    private $lv;
-    private $nv;
-    private $rv;
+    private $view;
+    private $navigationView;
 
-    public function __construct(){
-        $this->model = new \model\LoginModel();
-        $this->nv = new \view\NavigationView();
-        $this->lv = new \view\LoginView($this->model, $this->nv);
-        $this->rv = new \view\RegistrationView($this->model, $this->nv);
+    public function __construct(\view\NavigationView $nv, \model\LoginModel $model, \view\LoginView $lv){
+        $this->model = $model;
+        $this->navigationView = $nv;
+        $this->view = $lv;
     }
 
-    public function DoControl() : \model\ContentModel
+    public function DoLogin()
     {
-        $ret = "";
-
-        if($this->model->IsLoggedIn($this->lv->GetClientIdentifier()) == FALSE){
-            if($this->lv->UserAttemptedLogin()){
-                $ret = $this->AuthenticateUser();
-
-            }elseif($this->nv->UserNavigatesToRegistration()){
-                if($this->rv->UserAttemptedRegistration()){
-                    $ret = $this->RegisterUser();
+        if($this->model->IsLoggedIn($this->view->GetClientIdentifier()) == FALSE){
+            if($this->view->UserAttemptedLogin()){
+                if($this->model->AuthenticateLogin($this->view->GetUserCredentials())){
+                    $this->view->LoginSuccess();
                 }else{
-                    $ret = $this->rv->GetForm();
+                    $this->view->LoginFailed();
                 }
-            }else{
-                $ret = $this->lv->GetForm();
             }
-
         }else{
-            if($this->lv->UserAttemptedLogout()){
-                $this->LogoutUser();
+            if($this->view->UserAttemptedLogout()){
+                $this->model->LogoutUser();
+                $this->view->LogoutUser();
             }
-
-            $ret = $this->lv->GetForm();
         }
 
-        return new \model\ContentModel($ret, $this->model->IsLoggedIn($this->lv->GetClientIdentifier()));
+        return $this->model->IsLoggedIn($this->view->GetClientIdentifier());
     }
 
-    private function AuthenticateUser(){
-        if($this->model->AuthenticateLogin($this->lv->GetUserCredentials())){
-            $this->lv->LoginSuccess();
-        }else{
-            $this->lv->LoginFailed();
-        }
-
-        return $this->lv->GetForm();
-    }
-
-    private function LogoutUser(){
-        $this->model->LogoutUser();
-        $this->lv->LogoutUser();
-    }
-
-    private function RegisterUser(){
-       if($this->model->RegisterUser($this->rv->GetUserCredentials())){
-            $this->lv->RegistrationSuccess($this->rv->GetUserCredentials());
-            return $this->lv->GetForm();
-       }
-
-       return $this->rv->GetForm();
+    public function GetView(){
+        return $this->view->GetView();
     }
 }

@@ -6,7 +6,7 @@ namespace view;
 
 class ContentView
 {
-    public function Render(\model\ContentModel $output) : \string
+    public function Render(\string $output, \bool $loggedIn) : \string
     {
 
     return '<!DOCTYPE html>
@@ -16,10 +16,10 @@ class ContentView
     <title>LoginView Example</title>
   </head>
   <body>
-    <h1>' . $output->header . '</h1>
-    ' . $this->RenderIsLoggedIn($output->authenticated) . '
+    <h1>Assignment 4</h1>
+    ' . $this->RenderIsLoggedIn($loggedIn) . '
     <div class="container">
-    ' . $output->body . '
+    ' . $output . '
         ' . $this->RenderDate() . '
     </div>
   </body>

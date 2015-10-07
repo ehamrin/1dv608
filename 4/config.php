@@ -3,6 +3,7 @@ session_name("PHPSESSID");
 session_start();
 
 require_once 'common/Exception.php';
+require_once 'Settings.php';
 
 spl_autoload_register(function ($class) {
     $class = str_replace("\\", DIRECTORY_SEPARATOR, $class);
@@ -23,4 +24,3 @@ define("STRICT_TYPING", 0);
 
 define("APPLICATION_URL", "http://" . $_SERVER['HTTP_HOST'] . "/4/");
 define("APPLICATION_URI", getcwd() . '/');
-define("LOG_FILE_DIR", APPLICATION_URI . "log/");

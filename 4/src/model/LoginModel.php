@@ -9,9 +9,10 @@ class LoginModel
     private $dal;
     private $userDal;
 
-    public function __construct(){
+    public function __construct(\model\dal\UserDAL $userDAL){
         $this->dal = new dal\LoginDAL();
-        $this->userDal = new dal\UserDAL();
+        $this->persistentLoginDAL = new dal\PersistentLoginDAL();
+        $this->userDal = $userDAL;
     }
 
     public function IsLoggedIn(\string $clientIdentifier) : \bool
@@ -33,7 +34,7 @@ class LoginModel
             }
         }
 
-        if(dal\PersistentLoginDAL::MatchRecord($credentials)){
+        if($this->persistentLoginDAL->MatchRecord($credentials)){
             $this->LoginUser($credentials);
             return true;
         }
@@ -41,9 +42,9 @@ class LoginModel
         return false;
     }
 
-    public function GetPersistentLogin(\string $user) : PersistentLoginModel
+    public function GetPersistentLogin(\string $user) : PersistentLogin
     {
-        return new PersistentLoginModel($user);
+        return new PersistentLogin($user);
     }
 
     public function LoginUser(\model\UserCredentials $credentials)
@@ -54,32 +55,6 @@ class LoginModel
     public function LogoutUser()
     {
         $this->dal->Remove();
-    }
-
-    public function UserExists(UserCredentials $uc){
-        foreach($this->userDal->GetAllUsers() as $entry){
-            /* @var $entry \model\UserCredentials */
-            if($entry->GetUsername() == $uc->GetUsername()) {
-
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public function RegisterUser(UserCredentials $uc) : \bool
-    {
-        foreach($this->userDal->GetAllUsers() as $entry){
-            /* @var $entry \model\UserCredentials */
-            if($entry->GetUsername() == $uc->GetUsername()) {
-
-                return false;
-            }
-        }
-
-        $this->userDal->Add($uc);
-
-        return true;
     }
 
 }

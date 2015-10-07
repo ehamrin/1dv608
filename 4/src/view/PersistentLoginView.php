@@ -25,7 +25,7 @@ class PersistentLoginView
         return isset($_COOKIE[self::$cookieName], $_COOKIE[self::$cookiePassword]);
     }
 
-    public function StoreLogin(\model\PersistentLoginModel $credentials)
+    public function StoreLogin(\model\PersistentLogin $credentials)
     {
         CookieStorage::Set(self::$cookieName, $credentials->user, $credentials->expiration);
         CookieStorage::Set(self::$cookiePassword, $credentials->passPhrase, $credentials->expiration);

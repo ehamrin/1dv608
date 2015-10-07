@@ -1,8 +1,8 @@
 <?php
 require_once 'config.php';
 
-$controller = new \controller\LoginController();
-$output = $controller->DoControl();
+$controller = new \controller\MasterController();
+$loggedIn = $controller->handleInput();
 
 $page = new \view\ContentView();
-echo $page->Render($output);
+echo $page->Render($controller->generateOutput(), $loggedIn);

@@ -18,13 +18,13 @@ class LoginView
     private $message;
     private $persistent_login_view;
     private $model;
-    private $nv;
+    private $navigationView;
 
     public function __construct(\model\LoginModel $model, NavigationView $nv)
     {
         $this->persistent_login_view = new PersistentLoginView();
         $this->model = $model;
-        $this->nv = $nv;
+        $this->navigationView = $nv;
     }
 
     public function UserAttemptedLogin() : \bool
@@ -101,7 +101,7 @@ class LoginView
         $this->SetTemporaryMessage("Bye bye!");
     }
 
-    public function GetForm() : \string
+    public function GetView() : \string
     {
 
         if($this->model->IsLoggedIn($this->GetClientIdentifier())){
@@ -142,12 +142,6 @@ class LoginView
         return RegistrationCookiePersistance::Retrieve();
     }
 
-    public function RegistrationSuccess(\model\UserCredentials $uc){
-        RegistrationCookiePersistance::Set($uc->GetUsername());
-        $this->SetTemporaryMessage("Registered new user.");
-        $this->ReloadPage();
-    }
-
     private function GetPassword() : \string
     {
         return $_POST[self::$formPassword] ?? '';
@@ -160,7 +154,7 @@ class LoginView
 
     private function GetLoginForm() : \string
     {
-        return $this->nv->GetRegistrationLink() . '
+        return $this->navigationView->GetRegistrationLink() . '
         <form method="post" >
             <fieldset>
                 <legend>LoginView - enter Username and password</legend>
@@ -193,14 +187,7 @@ class LoginView
     private function SetTemporaryMessage(\string $message)
     {
         CookieMessageView::Set($message);
-        $this->ReloadPage();
-    }
-
-    private function ReloadPage()
-    {
-        header('Location: ' . APPLICATION_URL);
-        //Force server to shut down script
-        die();
+        $this->navigationView->GoToLogin();
     }
 
 }
