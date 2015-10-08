@@ -17,6 +17,12 @@ class RegistrationView
     private static $formMessage = "RegisterView::Message";
     private static $formRegister = "RegisterView::Register";
 
+    private static $usernameTooShortMessage = "Username has too few characters, at least 3 characters.";
+    private static $passwordTooShortMessage = "Password has too few characters, at least 6 characters.";
+    private static $userExistsMessage = "User exists, pick another username.";
+    private static $passwordMismatchMessage = "Passwords do not match.";
+    private static $usernameInvalidMessage = "Username contains invalid characters.";
+
     public function __construct(\model\RegistrationModel $model, NavigationView $nav){
         $this->navigationView = $nav;
         $this->model = $model;
@@ -66,26 +72,26 @@ class RegistrationView
 
         try{
             if(empty($this->GetUsername()) && empty($this->GetPassword())){
-                $this->message = "Username has too few characters, at least 3 characters. Password has too few characters, at least 6 characters.";
+                $this->message = self::$usernameTooShortMessage . ' ' . self::$passwordTooShortMessage;
                 return false;
             }
 
             $uc = new \model\UserCredentials($this->GetUsername(), $this->GetPassword());
 
             if($this->model->UserExists($uc)){
-                $this->message = "User exists, pick another username.";
+                $this->message = self::$userExistsMessage;
                 return false;
             }
             return true;
 
         }catch(\PasswordTooShortException $e){
-            $this->message = "Password has too few characters, at least 6 characters.";
+            $this->message = self::$passwordTooShortMessage;
         }catch(\UsernameTooShortException $e){
-            $this->message = "Username has too few characters, at least 3 characters.";
+            $this->message = self::$usernameTooShortMessage;
         }catch(\PasswordMismatchException $e){
-            $this->message = "Passwords do not match.";
+            $this->message = self::$passwordMismatchMessage;
         }catch(\UsernameInvalidException $e){
-            $this->message = "Username contains invalid characters.";
+            $this->message = self::$usernameInvalidMessage;
         }
         return false;
     }
