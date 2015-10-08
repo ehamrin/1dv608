@@ -9,9 +9,9 @@ class LoginModel
     private $dal;
     private $userDal;
 
-    public function __construct(\model\dal\UserDAL $userDAL){
+    public function __construct(\model\dal\UserDAL $userDAL, dal\PersistentLoginDAL $pld){
         $this->dal = new dal\LoginDAL();
-        $this->persistentLoginDAL = new dal\PersistentLoginDAL();
+        $this->persistentLoginDAL = $pld;
         $this->userDal = $userDAL;
     }
 
@@ -44,7 +44,7 @@ class LoginModel
 
     public function GetPersistentLogin(\string $user) : PersistentLogin
     {
-        return new PersistentLogin($user);
+        return new PersistentLogin($user, $this->persistentLoginDAL);
     }
 
     public function LoginUser(\model\UserCredentials $credentials)

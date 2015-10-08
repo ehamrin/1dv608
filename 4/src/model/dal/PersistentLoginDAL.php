@@ -6,9 +6,8 @@ class PersistentLoginDAL
 {
     private $db;
 
-    public function __construct(){
-        $db = new Database();
-        $this->db = $db->Establish();
+    public function __construct(\PDO $dal){
+        $this->db = $dal;
     }
 
     public function Log(\model\PersistentLogin $credentials)

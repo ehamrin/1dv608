@@ -2,8 +2,8 @@
 require_once 'config.php';
 
 $controller = new \controller\MasterController();
-$loggedIn = false;
-$controller->handleInput($loggedIn);
+
+$controller->handleInput();
 
 $page = new \view\ContentView();
-echo $page->Render($controller->generateOutput(), $loggedIn);
+echo $page->Render($controller->generateOutput(), $controller->IsLoggedIn());

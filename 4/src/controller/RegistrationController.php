@@ -16,7 +16,7 @@ class RegistrationController
         $this->model = $model;
     }
 
-    public function doRegister() : \bool
+    public function DoRegister() : \bool
     {
         if($this->view->UserSubmittedRegistration()){
             if($this->model->RegisterUser($this->view->GetUserCredentials())){
