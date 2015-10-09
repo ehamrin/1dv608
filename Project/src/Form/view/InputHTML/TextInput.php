@@ -1,4 +1,7 @@
 <?php
+if(!isset($input)){
+    throw new ElementMissingException();
+}
 /*
  * Use variable $input to access methods
  *

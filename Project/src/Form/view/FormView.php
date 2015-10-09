@@ -6,6 +6,7 @@ namespace Form\view;
 use \Form\model as model;
 
 class InputViewNotFoundException extends \Exception{}
+class ElementMissingException extends \Exception{}
 
 class FormView
 {
