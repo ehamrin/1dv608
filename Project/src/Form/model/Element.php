@@ -92,6 +92,8 @@ abstract class Element implements IElement
     }
 
     public function GetClassName(){
-        return array_pop(explode('\\', get_class($this)));
+        $class = get_class($this);
+        $array = explode('\\', $class);
+        return array_pop($array);
     }
 }
