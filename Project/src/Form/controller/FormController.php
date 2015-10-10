@@ -28,6 +28,7 @@ class FormController
 
         foreach($this->inputCatalog->GetAll() as $input){
             if($input->Validate() == false){
+                var_dump($input->GetErrorMessage());
                 return false;
             }
         }

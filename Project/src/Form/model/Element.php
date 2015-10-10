@@ -10,6 +10,7 @@ abstract class Element implements IElement
     private $label;
     private $value;
     private $validator = array();
+    private $error = array();
 
     public function __construct($name, $value){
         $this->name = $name;
@@ -54,11 +55,22 @@ abstract class Element implements IElement
     }
 
     public function Validate(){
+        $valid = true;
         foreach($this->GetValidators() as $validator){
             if($validator->Validate($this->value) == FALSE){
-                return false;
+                $valid = false;
+
+                $this->AddError($validator->GetMessage());
             }
         }
-        return true;
+        return $valid;
+    }
+
+    public function AddError(\string $message){
+        $this->error[] = $message;
+    }
+
+    public function GetErrorMessage(){
+       return $this->error;
     }
 }

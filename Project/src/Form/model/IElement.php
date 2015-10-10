@@ -12,4 +12,5 @@ interface IElement
     public function SetLabel(\string $label);
     public function GetLabel();
     public function Validate();
+    public function GetErrorMessage();
 }
