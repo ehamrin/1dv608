@@ -77,12 +77,7 @@ class FormView
         foreach($this->inputCatalog->GetAll() as $input){
             if($input->GetClassName() == "SubmitButton"){
 
-                if(session_status() !== PHP_SESSION_ACTIVE){
-                    if(isset($_POST[$input->GetName()])) {
-                        $this->submitted = true;
-                        return true;
-                    }
-                }elseif(\Form\Settings::UsePRG == true){
+                if(session_status() !== PHP_SESSION_ACTIVE && \Form\Settings::UsePRG == true){
                     if(isset($_POST[$input->GetName()])){
                         $_SESSION[self::$sessionLocation] = $_POST;
                         header('location: ' . $_SERVER["REQUEST_URI"]);
@@ -91,6 +86,11 @@ class FormView
                     }elseif(isset($_SESSION[self::$sessionLocation][$input->GetName()])){
                         $_POST = $_SESSION[self::$sessionLocation];
                         unset($_SESSION[self::$sessionLocation]);
+                        $this->submitted = true;
+                        return true;
+                    }
+                }else{
+                    if(isset($_POST[$input->GetName()])) {
                         $this->submitted = true;
                         return true;
                     }
