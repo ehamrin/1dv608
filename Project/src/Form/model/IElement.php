@@ -18,4 +18,5 @@ interface IElement
     public function GetClassName();
     public function GetValue();
     public function SetValue($value);
+    public function AddError(\string $message, \string $key = null);
 }

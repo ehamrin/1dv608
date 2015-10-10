@@ -13,6 +13,7 @@ class FormView
 {
     private static $sessionLocation = "Form\\FormView::SessionStorage";
     private $inputCatalog;
+    private $submitted = false;
 
     public function __construct(model\InputCatalog $inputCatalog){
         $this->inputCatalog = $inputCatalog;
@@ -40,7 +41,7 @@ class FormView
             throw new InputViewNotFoundException("Could not find Input file {$file} in " . __DIR__ . DIRECTORY_SEPARATOR . $file);
         }
 
-        $errormessages = $this->GetErrorMessageHTML($input);
+        $errormessages = $this->submitted ? $this->GetErrorMessageHTML($input) : '';
 
         ob_start();
         include($directory . $file);
@@ -49,6 +50,7 @@ class FormView
 
     private function GetErrorMessageHTML(model\IElement $input){
         $list = "";
+
         foreach($input->GetErrorMessage() as $message){
             $list .= '<li>' . $message . '</li>';
         }
@@ -61,8 +63,8 @@ class FormView
 
     }
 
-    public function GetValue($name){
-        return $_POST[$name] ?? '';
+    public function GetSubmittedData(){
+        return $_POST ?? array();
     }
 
     /*
@@ -77,16 +79,19 @@ class FormView
 
                 if(session_status() !== PHP_SESSION_ACTIVE){
                     if(isset($_POST[$input->GetName()])) {
+                        $this->submitted = true;
                         return true;
                     }
                 }elseif(\Form\Settings::UsePRG == true){
                     if(isset($_POST[$input->GetName()])){
                         $_SESSION[self::$sessionLocation] = $_POST;
                         header('location: ' . $_SERVER["REQUEST_URI"]);
+                        $this->submitted = true;
                         return true;
                     }elseif(isset($_SESSION[self::$sessionLocation][$input->GetName()])){
                         $_POST = $_SESSION[self::$sessionLocation];
                         unset($_SESSION[self::$sessionLocation]);
+                        $this->submitted = true;
                         return true;
                     }
                 }

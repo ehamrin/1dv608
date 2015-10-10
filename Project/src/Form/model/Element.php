@@ -13,7 +13,7 @@ abstract class Element implements IElement
     private $validator = array();
     private $error = array();
 
-    public function __construct($name, $value){
+    public function __construct($name, $value = ""){
         $this->name = $name;
         $this->value = $value;
         $this->template = "";
@@ -80,7 +80,7 @@ abstract class Element implements IElement
         return $valid;
     }
 
-    public function AddError(\string $message, $key = null){
+    public function AddError(\string $message, \string $key = null){
         if($key == null){
             $key = count($this->error);
         }

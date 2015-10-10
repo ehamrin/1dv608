@@ -37,19 +37,15 @@ class FormController
     }
 
     private function IsValid(){
-        $status = true;
-        foreach($this->inputCatalog->GetAll() as $input){
-            $input->SetValue($this->view->GetValue($input->GetName()));
-            $input->Validate();
-            if(count($input->GetErrorMessage())){
-                $status =  false;
-            }
-        }
-
-        return $status;
+        $this->inputCatalog->UpdateValues($this->view->GetSubmittedData());
+        return $this->inputCatalog->IsValid();
     }
 
     public function WasSubmitted(){
         return ($this->view->WasSubmitted() && $this->IsValid());
+    }
+
+    public function InjectError(\string $input, \string $message){
+        $this->inputCatalog->Get($input)->AddError($message);
     }
 }
