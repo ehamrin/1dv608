@@ -77,7 +77,7 @@ class FormView
         foreach($this->inputCatalog->GetAll() as $input){
             if($input->GetClassName() == "SubmitButton"){
 
-                if(session_status() !== PHP_SESSION_ACTIVE && \Form\Settings::UsePRG == true){
+                if(session_status() === PHP_SESSION_ACTIVE && \Form\Settings::UsePRG == true){
                     if(isset($_POST[$input->GetName()])){
                         $_SESSION[self::$sessionLocation] = $_POST;
                         header('location: ' . $_SERVER["REQUEST_URI"]);
