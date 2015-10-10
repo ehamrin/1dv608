@@ -26,6 +26,14 @@ Project/index.php
 Project/*.css
 Project/*.png
 
+!Project/tests/
+
+Project/tests/*
+!Project/tests/app/
+
+Project/tests/app/*
+!Project/tests/app/test/
+
 # Crashlytics plugin (for Android Studio and IntelliJ)
 com_crashlytics_export_strings.xml
 crashlytics.properties
