@@ -28,16 +28,22 @@ class FormView
     }
 
     private function GetInputView(model\IElement $input){
-        $file = "InputHTML/" . $input->GetClassName() . '.php';
+        $extension = ".php";
+        $directory = "InputHTML/";
+        $file = $input->GetClassName() . $extension;
 
-        if(!is_file(__DIR__ . DIRECTORY_SEPARATOR . $file)){
-            throw new InputViewNotFoundException("Could not find Input file {$input->GetClassName()} in " . __DIR__ . DIRECTORY_SEPARATOR . $file);
+        if(!empty($input->GetTemplateName())){
+            $file = $input->GetClassName() . '_' . $input->GetTemplateName() . $extension;
+        }
+
+        if(!is_file(__DIR__ . DIRECTORY_SEPARATOR . $directory . $file)){
+            throw new InputViewNotFoundException("Could not find Input file {$file} in " . __DIR__ . DIRECTORY_SEPARATOR . $file);
         }
 
         $errormessages = $this->GetErrorMessageHTML($input);
 
         ob_start();
-        include($file);
+        include($directory . $file);
         return ob_get_clean();
     }
 

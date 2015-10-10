@@ -3,6 +3,18 @@
 
 namespace Form\controller;
 
+require_once dirname(__DIR__) . '/model/validation/Validators.php';
+require_once dirname(__DIR__) . '/Settings.php';
+
+spl_autoload_register(function ($class) {
+    $class = str_replace("\\", DIRECTORY_SEPARATOR, $class);
+    $filename = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . $class . '.php';
+
+    if(file_exists($filename)){
+        require_once $filename;
+    }
+});
+
 use \Form\model as model;
 use \Form\view as view;
 
@@ -16,7 +28,7 @@ class FormController
         $this->view = new view\FormView($this->inputCatalog);
     }
 
-    public function Add(model\IElement $toBeAdded){
+    public function AddInput(model\IElement $toBeAdded){
         $this->inputCatalog->Add($toBeAdded);
     }
 

@@ -9,12 +9,14 @@ abstract class Element implements IElement
     private $name;
     private $label;
     private $value;
+    private $template;
     private $validator = array();
     private $error = array();
 
     public function __construct($name, $value){
         $this->name = $name;
         $this->value = $value;
+        $this->template = "";
     }
 
     public function IsSame(IElement $element){
@@ -23,6 +25,17 @@ abstract class Element implements IElement
 
     public function GetName(){
         return $this->name;
+    }
+
+    public function SetTemplateName(\string $name){
+        $this->template = $name;
+
+        return $this;
+    }
+
+    public function GetTemplateName() : \string
+    {
+        return $this->template;
     }
 
     public function GetValue(){

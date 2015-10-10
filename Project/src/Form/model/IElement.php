@@ -11,6 +11,8 @@ interface IElement
 
     public function SetLabel(\string $label);
     public function GetLabel();
+    public function SetTemplateName(\string $name);
+    public function GetTemplateName() : \string;
     public function Validate();
     public function GetErrorMessage();
     public function GetClassName();
