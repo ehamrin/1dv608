@@ -16,6 +16,6 @@ class LessThanEqual extends Validation
 
     public function Validate($value) : \bool
     {
-        return ($value > $this->min);
+        return ($value <= $this->min);
     }
 }

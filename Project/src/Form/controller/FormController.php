@@ -28,7 +28,7 @@ class FormController
     public function __construct(\string $formName){
         $this->name = $formName;
         $this->inputCatalog = new model\InputCatalog();
-        $this->view = new view\FormView($this->name, $this->inputCatalog, \Form\Settings::UsePRG);
+        $this->view = new view\FormView($this->name, $this->inputCatalog, \Form\Settings::$UsePRG);
     }
 
     public function AddInput(model\IElement ...$toBeAdded){
@@ -50,8 +50,12 @@ class FormController
         return ($this->view->WasSubmitted() && $this->IsValid());
     }
 
-    public function InjectError(\string $input, \string $message){
+    public function InjectInputError(\string $input, \string $message){
         $this->inputCatalog->Get($input)->AddError($message);
+    }
+
+    public function InjectFormError(\string $message){
+
     }
 
 }

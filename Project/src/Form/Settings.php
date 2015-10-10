@@ -6,5 +6,5 @@ namespace Form;
 
 class Settings
 {
-    const UsePRG = TRUE;
+    public static $UsePRG = TRUE;
 }
