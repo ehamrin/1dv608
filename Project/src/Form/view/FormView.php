@@ -14,8 +14,12 @@ class FormView
     private static $sessionLocation = "Form\\FormView::SessionStorage";
     private $inputCatalog;
     private $submitted = false;
+    private $formName;
+    private $usePRG;
 
-    public function __construct(model\InputCatalog $inputCatalog){
+    public function __construct(\string $formName, model\InputCatalog $inputCatalog, \bool $usePRG){
+        $this->formName = $formName;
+        $this->usePRG = $usePRG;
         $this->inputCatalog = $inputCatalog;
     }
 
@@ -77,15 +81,15 @@ class FormView
         foreach($this->inputCatalog->GetAll() as $input){
             if($input->GetClassName() == "Submit"){
 
-                if(session_status() === PHP_SESSION_ACTIVE && \Form\Settings::UsePRG == true){
+                if(session_status() === PHP_SESSION_ACTIVE && $this->usePRG == true){
                     if(isset($_POST[$input->GetName()])){
-                        $_SESSION[self::$sessionLocation] = $_POST;
+                        $_SESSION[self::$sessionLocation][$this->formName] = $_POST;
                         header('location: ' . $_SERVER["REQUEST_URI"]);
                         $this->submitted = true;
                         return true;
-                    }elseif(isset($_SESSION[self::$sessionLocation][$input->GetName()])){
-                        $_POST = $_SESSION[self::$sessionLocation];
-                        unset($_SESSION[self::$sessionLocation]);
+                    }elseif(isset($_SESSION[self::$sessionLocation][$this->formName][$input->GetName()])){
+                        $_POST = $_SESSION[self::$sessionLocation][$this->formName];
+                        unset($_SESSION[self::$sessionLocation][$this->formName]);
                         $this->submitted = true;
                         return true;
                     }

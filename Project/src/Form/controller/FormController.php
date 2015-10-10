@@ -23,10 +23,12 @@ class FormController
 {
     private $view;
     private $inputCatalog;
+    private $name;
 
-    public function __construct(){
+    public function __construct(\string $formName){
+        $this->name = $formName;
         $this->inputCatalog = new model\InputCatalog();
-        $this->view = new view\FormView($this->inputCatalog);
+        $this->view = new view\FormView($this->name, $this->inputCatalog, \Form\Settings::UsePRG);
     }
 
     public function AddInput(model\IElement ...$toBeAdded){
