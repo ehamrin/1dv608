@@ -3,7 +3,6 @@
 
 namespace Form\controller;
 
-require_once dirname(__DIR__) . '/model/validation/Validators.php';
 require_once dirname(__DIR__) . '/Settings.php';
 
 spl_autoload_register(function ($class) {
