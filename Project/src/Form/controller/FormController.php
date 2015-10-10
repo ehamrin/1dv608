@@ -23,4 +23,15 @@ class FormController
     public function GetView(){
         return $this->view->GetView();
     }
+
+    public function IsValid(){
+
+        foreach($this->inputCatalog->GetAll() as $input){
+            if($input->Validate() == false){
+                return false;
+            }
+        }
+
+        return true;
+    }
 }

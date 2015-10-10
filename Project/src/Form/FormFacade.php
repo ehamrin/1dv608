@@ -3,6 +3,8 @@
 
 namespace Form\controller;
 
+require_once __DIR__ . '/model/validation/Validators.php';
+
 spl_autoload_register(function ($class) {
     $class = str_replace("\\", DIRECTORY_SEPARATOR, $class);
     $filename = dirname(__DIR__) . DIRECTORY_SEPARATOR . $class . '.php';
@@ -27,5 +29,9 @@ class FormFacade
     public function Render() : \string
     {
         return $this->controller->GetView();
+    }
+
+    public function IsValid(){
+        return $this->controller->IsValid();
     }
 }
