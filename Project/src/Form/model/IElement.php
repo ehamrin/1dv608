@@ -13,4 +13,7 @@ interface IElement
     public function GetLabel();
     public function Validate();
     public function GetErrorMessage();
+    public function GetClassName();
+    public function GetValue();
+    public function SetValue($value);
 }

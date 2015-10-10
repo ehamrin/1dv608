@@ -56,21 +56,29 @@ abstract class Element implements IElement
 
     public function Validate(){
         $valid = true;
-        foreach($this->GetValidators() as $validator){
+
+        foreach($this->GetValidators() as $key => $validator){
             if($validator->Validate($this->value) == FALSE){
                 $valid = false;
+                $this->AddError($validator->GetMessage(), $key);
 
-                $this->AddError($validator->GetMessage());
             }
         }
         return $valid;
     }
 
-    public function AddError(\string $message){
-        $this->error[] = $message;
+    public function AddError(\string $message, $key = null){
+        if($key == null){
+            $key = count($this->error);
+        }
+        $this->error[$key] = $message;
     }
 
     public function GetErrorMessage(){
        return $this->error;
+    }
+
+    public function GetClassName(){
+        return array_pop(explode('\\', get_class($this)));
     }
 }

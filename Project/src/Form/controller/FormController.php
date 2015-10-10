@@ -24,15 +24,20 @@ class FormController
         return $this->view->GetView();
     }
 
-    public function IsValid(){
-
+    private function IsValid(){
+        $status = true;
         foreach($this->inputCatalog->GetAll() as $input){
-            if($input->Validate() == false){
-                var_dump($input->GetErrorMessage());
-                return false;
+            $input->SetValue($this->view->GetValue($input->GetName()));
+            $input->Validate();
+            if(count($input->GetErrorMessage())){
+                $status =  false;
             }
         }
 
-        return true;
+        return $status;
+    }
+
+    public function WasSubmitted(){
+        return ($this->view->WasSubmitted() && $this->IsValid());
     }
 }

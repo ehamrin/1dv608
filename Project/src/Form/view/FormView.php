@@ -7,9 +7,11 @@ use \Form\model as model;
 
 class InputViewNotFoundException extends \Exception{}
 class ElementMissingException extends \Exception{}
+class SessionMissingException extends \Exception{}
 
 class FormView
 {
+    private static $sessionLocation = "Form\\FormView::SessionStorage";
     private $inputCatalog;
 
     public function __construct(model\InputCatalog $inputCatalog){
@@ -17,20 +19,73 @@ class FormView
     }
 
     public function GetView(){
-        $ret = "";
+        $ret = '<form action="" method="POST">';
         foreach($this->inputCatalog->GetAll() as $input){
-
-            $class = array_pop(explode('\\', get_class($input)));
-            $file = "InputHTML/" . $class . '.php';
-
-            if(!is_file(__DIR__ . DIRECTORY_SEPARATOR . $file)){
-                throw new InputViewNotFoundException("Could not find Input file {$class} in " . __DIR__ . DIRECTORY_SEPARATOR . $file);
-            }
-
-            ob_start();
-            include($file);
-            $ret .= ob_get_clean();
+            $ret .= $this->GetInputView($input);
         }
+        $ret .= '</form>';
         return $ret;
+    }
+
+    private function GetInputView(model\IElement $input){
+        $file = "InputHTML/" . $input->GetClassName() . '.php';
+
+        if(!is_file(__DIR__ . DIRECTORY_SEPARATOR . $file)){
+            throw new InputViewNotFoundException("Could not find Input file {$input->GetClassName()} in " . __DIR__ . DIRECTORY_SEPARATOR . $file);
+        }
+
+        $errormessages = $this->GetErrorMessageHTML($input);
+
+        ob_start();
+        include($file);
+        return ob_get_clean();
+    }
+
+    private function GetErrorMessageHTML(model\IElement $input){
+        $list = "";
+        foreach($input->GetErrorMessage() as $message){
+            $list .= '<li>' . $message . '</li>';
+        }
+
+        if(!empty($list)){
+            $list = '<ul class="error-messages">' . $list . '</ul>';
+        }
+
+        return $list;
+
+    }
+
+    public function GetValue($name){
+        return $_POST[$name] ?? '';
+    }
+
+    /*
+     * Utilizes SESSION to store POST-data temporarily for use of PRG-pattern
+     * PRG is only used if a session is started elsewhere in the project, this is not not by the FormHandler
+     *
+     */
+    public function WasSubmitted() : \bool
+    {
+        foreach($this->inputCatalog->GetAll() as $input){
+            if($input->GetClassName() == "SubmitButton"){
+
+                if(session_status() !== PHP_SESSION_ACTIVE){
+                    if(isset($_POST[$input->GetName()])) {
+                        return true;
+                    }
+                }elseif(\Form\Settings::UsePRG == true){
+                    if(isset($_POST[$input->GetName()])){
+                        $_SESSION[self::$sessionLocation] = $_POST;
+                        header('location: ' . $_SERVER["REQUEST_URI"]);
+                        return true;
+                    }elseif(isset($_SESSION[self::$sessionLocation][$input->GetName()])){
+                        $_POST = $_SESSION[self::$sessionLocation];
+                        unset($_SESSION[self::$sessionLocation]);
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 }
