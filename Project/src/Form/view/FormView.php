@@ -75,7 +75,7 @@ class FormView
     public function WasSubmitted() : \bool
     {
         foreach($this->inputCatalog->GetAll() as $input){
-            if($input->GetClassName() == "SubmitButton"){
+            if($input->GetClassName() == "Submit"){
 
                 if(session_status() === PHP_SESSION_ACTIVE && \Form\Settings::UsePRG == true){
                     if(isset($_POST[$input->GetName()])){

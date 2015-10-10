@@ -14,6 +14,8 @@ spl_autoload_register(function ($class) {
     }
 });
 
+class UnknownClassException extends \Exception{}
+
 use \Form\model as model;
 use \Form\view as view;
 
@@ -27,8 +29,10 @@ class FormController
         $this->view = new view\FormView($this->inputCatalog);
     }
 
-    public function AddInput(model\IElement $toBeAdded){
-        $this->inputCatalog->Add($toBeAdded);
+    public function AddInput(model\IElement ...$toBeAdded){
+        foreach($toBeAdded as $element){
+            $this->inputCatalog->Add($element);
+        }
     }
 
     public function GetView(){
@@ -47,4 +51,5 @@ class FormController
     public function InjectError(\string $input, \string $message){
         $this->inputCatalog->Get($input)->AddError($message);
     }
+
 }
