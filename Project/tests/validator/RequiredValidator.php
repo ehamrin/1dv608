@@ -5,6 +5,8 @@ namespace Form;
 
 use \PHPUnit_Framework_TestCase;
 
+require_once dirname(__DIR__) . '/../src/Form/controller/FormController.php';
+
 class RequiredValidator extends \PHPUnit_Framework_TestCase
 {
 

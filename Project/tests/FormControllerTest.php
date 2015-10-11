@@ -2,6 +2,8 @@
 
 namespace Form;
 
+require_once dirname(__DIR__) . '/src/Form/controller/FormController.php';
+
 use \PHPUnit_Framework_TestCase;
 
 class FormControllerTest extends PHPUnit_Framework_TestCase

@@ -3,6 +3,8 @@
 
 namespace Form;
 
+require_once dirname(__DIR__) . '/../src/Form/controller/FormController.php';
+
 use \PHPUnit_Framework_TestCase;
 
 class LargerThanValidator extends \PHPUnit_Framework_TestCase
