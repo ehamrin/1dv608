@@ -3,7 +3,7 @@
 
 namespace Form\model\input;
 
-class Submit extends \Form\model\Element
+class Submit extends \Form\model\ElementFacade
 {
 
 }

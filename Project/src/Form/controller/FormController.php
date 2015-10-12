@@ -16,8 +16,6 @@ if(\Form\Settings::$UseFormAutoLoader) {
     });
 }
 
-class UnknownClassException extends \Exception{}
-
 use \Form\model as model;
 use \Form\view as view;
 
@@ -33,9 +31,10 @@ class FormController
         $this->view = new view\FormView($this->name, $this->inputCatalog, \Form\Settings::$UsePRG);
     }
 
-    public function AddInput(model\IElement ...$toBeAdded){
+    public function AddInput(model\ElementFacade ...$toBeAdded){
         foreach($toBeAdded as $element){
-            $this->inputCatalog->Add($element);
+            /* @var $element \Form\model\ElementFacade */
+            $this->inputCatalog->Add($element->GetModelObject());
         }
     }
 

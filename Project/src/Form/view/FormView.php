@@ -25,7 +25,7 @@ class FormView
     }
 
     public function GetView(){
-        $ret = '<form action="" method="POST">';
+        $ret = '<form action="" method="POST" id="' . $this->formName . '">';
         foreach($this->inputCatalog->GetAll() as $input){
             $ret .= $this->GetInputView($input);
         }
