@@ -23,10 +23,6 @@ atlassian-ide-plugin.xml
 #Settings file
 2/*
 4/*
-Project/index.php
-Project/*.css
-Project/*.png
-
 Project/phpunit/*
 
 
