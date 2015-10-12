@@ -66,6 +66,8 @@ class InputCatalog
                 }elseif(\Form\Settings::$PopulateCheckboxIndex == true){
                     $ret[$input->GetName()] = (bool)$input->GetValue();
                 }
+            }elseif($input->GetClassName() == "Submit" && \Form\Settings::$PopulateSubmitIndex == FALSE){
+                //Ignore submit button
             }else{
                 $ret[$input->GetName()] = $input->GetValue();
             }

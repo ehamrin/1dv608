@@ -13,4 +13,6 @@ class Settings
      * If true, the index will always be populated with true or false
      */
     public static $PopulateCheckboxIndex = TRUE;
+
+    public static $PopulateSubmitIndex = FALSE;
 }

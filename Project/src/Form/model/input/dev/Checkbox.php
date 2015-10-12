@@ -8,6 +8,6 @@ class Checkbox extends \Form\model\Element
 {
     public function GetValue()
     {
-        return (bool)$this->value;
+        return $this->value;
     }
 }
