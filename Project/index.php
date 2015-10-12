@@ -92,6 +92,7 @@ $form->AddInput(
 
 $message = "";
 if($form->WasSubmitted()){
+    var_dump($form->GetData());
     $message = "Successfully submitted the form";
 }
 

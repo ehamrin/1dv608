@@ -51,6 +51,10 @@ class FormController
         return ($this->view->WasSubmitted() && $this->IsValid());
     }
 
+    public function GetData(){
+        return $this->inputCatalog->Export();
+    }
+
     public function InjectInputError(\string $input, \string $message){
         $this->inputCatalog->Get($input)->AddError($message);
     }

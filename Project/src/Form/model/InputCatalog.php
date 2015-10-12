@@ -54,4 +54,25 @@ class InputCatalog
 
         return $status;
     }
+
+    public function Export()
+    {
+        $ret = array();
+
+        foreach($this->GetAll() as $input){
+            if($input->GetClassName() == "Checkbox"){
+                if(\Form\Settings::$PopulateCheckboxIndex == false && !empty($input->GetValue())){
+                    $ret[$input->GetName()] = $input->GetValue();
+                }elseif(\Form\Settings::$PopulateCheckboxIndex == true){
+                    $ret[$input->GetName()] = (bool)$input->GetValue();
+                }
+            }else{
+                $ret[$input->GetName()] = $input->GetValue();
+            }
+
+        }
+
+        return $ret;
+
+    }
 }
