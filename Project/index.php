@@ -4,6 +4,7 @@ require_once 'src/Form/controller/FormController.php';
 
 $form = new \Form\controller\FormController("RegistrationForm");
 
+use \Form\model\Option;
 use \Form\model\input;
 use \Form\model\validation;
 use \Form\model\comparator;
@@ -31,13 +32,13 @@ $form->AddInput(
     ((new input\Text("RegistrationView::PersonalIdentification"))
         ->SetLabel("Personal ID")
         ->SetValidation(
-            new validation\RegEx("/^(19|20)?[0-9]{6}(-)?[0-9pPtTfF][0-9]{3}$/", "Personal ID must match YYYYMMDD-XXXX")
+            new validation\RegEx(validation\RegEx::SWEDISH_PID, "Personal ID must match YYYYMMDD-XXXX")
         )
     ),
     ((new input\Text("RegistrationView::PostalCode"))
         ->SetLabel("Postal Code")
         ->SetValidation(
-            new validation\RegEx(validation\RegEx::SWEDISH_POSTAL_CODE, "Personal ID must match YYYYMMDD-XXXX")
+            new validation\RegEx("/^\d{3}(\s)?\d{2}$/", 'Postal code must be 5 digits')
         )
     ),
     ((new input\Password("RegistrationView::Password"))
@@ -46,6 +47,7 @@ $form->AddInput(
             new validation\Required("You must fill in a password"),
             new validation\MinLength(6, "Password must be longer than 6 characters")
         )
+        ->SetComparator(new comparator\EqualTo("RegistrationView::PasswordRepeat", "Must match Repeat Password"))
     ),
     ((new input\Password("RegistrationView::PasswordRepeat"))
         ->SetLabel("Repeat Password")
@@ -54,6 +56,15 @@ $form->AddInput(
             new validation\MinLength(6, "Password must be longer than 6 characters")
         )
         ->SetComparator(new comparator\EqualTo("RegistrationView::Password", "Must match Password"))
+    ),
+    ((new input\Select("RegistrationView::SelectAge"))
+        ->SetLabel("Age")
+        ->AddOption(
+            new Option("17", 17),
+            new Option("18", 18),
+            new Option("19", 19)
+        )
+        ->SetValidation(new validation\LargerThanEqual(18, "You must be 18 or older to register"))
     ),
     (new input\Submit("RegistrationView::Register", "Register"))
 );

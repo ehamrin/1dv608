@@ -6,16 +6,14 @@ namespace Form\model;
 
 abstract class ElementFacade
 {
-    private $object;
+    /*
+     * @var $object \Form\model\IElement
+     */
+    protected $object;
 
     public function __construct($name, $value = ""){
-        $classname = array_pop(explode('\\', get_class($this)));
-        $class = "\\Form\\model\\input\\dev\\" . $classname;
+        $class = $this->GetDevClassName();
         $object = new $class($name, $value);
-
-        /*
-         * @var $object \Form\model\IElement
-         */
         $this->object = $object;
     }
 
@@ -48,5 +46,14 @@ abstract class ElementFacade
     public function GetModelObject() : IElement
     {
         return $this->object;
+    }
+
+    private function GetDevClassName(){
+        $classArr = get_class($this);
+        $classArr = explode('\\', $classArr);   // Explode namespace string
+        $classname = array_pop($classArr);      // Remove class name from namespaces
+        $classArr[] = "dev";                    // Add "dev" namespace at end of namespaces
+        $classArr[] = $classname;               // Add classname back in array
+        return implode('\\', $classArr);      // Rebuild namespace string
     }
 }
