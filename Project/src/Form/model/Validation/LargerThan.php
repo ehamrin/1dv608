@@ -4,7 +4,7 @@
 namespace Form\model\validation;
 
 
-class LargerThan extends Validation
+class LargerThan extends \Form\model\Validation
 {
     private $max;
 

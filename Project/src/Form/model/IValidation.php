@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Form\model\validation;
+namespace Form\model;
 
 
 interface IValidation

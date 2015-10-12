@@ -3,8 +3,7 @@
 
 namespace Form\model\validation;
 
-
-class URL extends Validation
+class URL extends \Form\model\Validation
 {
     public function Validate($value) : \bool
     {

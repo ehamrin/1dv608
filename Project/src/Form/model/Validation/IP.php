@@ -4,7 +4,7 @@
 namespace Form\model\validation;
 
 
-class IP extends Validation
+class IP extends \Form\model\Validation
 {
     public function Validate($value) : \bool
     {

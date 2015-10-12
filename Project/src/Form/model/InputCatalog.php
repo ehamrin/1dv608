@@ -46,7 +46,7 @@ class InputCatalog
     {
         $status = true;
         foreach($this->GetAll() as $input){
-            $input->Validate();
+            $input->Validate($this);
             if(count($input->GetErrorMessage())){
                 $status =  false;
             }

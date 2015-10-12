@@ -13,7 +13,7 @@ interface IElement
     public function GetLabel();
     public function SetTemplateName(\string $name);
     public function GetTemplateName() : \string;
-    public function Validate();
+    public function Validate(\Form\model\InputCatalog $catalog);
     public function GetErrorMessage();
     public function GetClassName();
     public function GetValue();

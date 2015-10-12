@@ -4,7 +4,7 @@
 namespace Form\model\validation;
 
 
-class LessThan extends Validation
+class LessThan extends \Form\model\Validation
 {
     private $min;
 

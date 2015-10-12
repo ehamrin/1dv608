@@ -35,8 +35,13 @@ abstract class ElementFacade
         return $this;
     }
 
-    public function SetValidation(validation\IValidation ...$validators){
+    public function SetValidation(IValidation ...$validators){
         $this->object->SetValidation(...$validators);
+        return $this;
+    }
+
+    public function SetComparator(IComparator ...$comparators){
+        $this->object->SetComparator(...$comparators);
         return $this;
     }
 

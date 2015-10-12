@@ -4,7 +4,7 @@
 namespace Form\model\validation;
 
 
-class MinLength extends Validation
+class MinLength extends \Form\model\Validation
 {
     private $min;
 

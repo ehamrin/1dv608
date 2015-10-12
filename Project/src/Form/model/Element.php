@@ -11,15 +11,18 @@ abstract class Element implements IElement
     private $value;
     private $template;
     private $validator = array();
+    private $comparator = array();
     private $error = array();
 
-    public function __construct($name, $value = ""){
+    public function __construct($name, $value = "")
+    {
         $this->name = $name;
         $this->value = $value;
         $this->template = "";
     }
 
-    public function IsSame(IElement $element){
+    public function IsSame(IElement $element)
+    {
         return $this->name == $element->GetName();
     }
 
@@ -27,10 +30,9 @@ abstract class Element implements IElement
         return $this->name;
     }
 
-    public function SetTemplateName(\string $name){
+    public function SetTemplateName(\string $name)
+    {
         $this->template = $name;
-
-        return $this;
     }
 
     public function GetTemplateName() : \string
@@ -38,36 +40,52 @@ abstract class Element implements IElement
         return $this->template;
     }
 
-    public function GetValue(){
+    public function GetValue()
+    {
         return $this->value;
     }
 
-    public function SetValue($value){
+    public function SetValue($value)
+    {
         $this->value = $value;
     }
 
-    public function SetLabel(\string $label) : Element{
+    public function SetLabel(\string $label)
+    {
         $this->label = $label;
-        return $this;
     }
 
-    public function GetLabel(){
+    public function GetLabel()
+    {
         return $this->label;
     }
 
-    public function SetValidation(validation\IValidation ...$validators){
+    public function SetValidation(IValidation ...$validators)
+    {
         $this->validator = $validators;
-        return $this;
     }
 
     /**
-     * @return validation\IValidation[]
+     * @return IValidation[]
      */
-    private function GetValidators(){
+    private function GetValidators()
+    {
         return $this->validator;
     }
 
-    public function Validate(){
+    public function SetComparator(IComparator ...$comparators){
+        $this->comparator = $comparators;
+    }
+
+    /**
+     * @return IComparator[]
+     */
+    private function GetComparator(){
+        return $this->comparator;
+    }
+
+
+    public function Validate(InputCatalog $catalog){
         $valid = true;
 
         foreach($this->GetValidators() as $key => $validator){
@@ -75,6 +93,16 @@ abstract class Element implements IElement
                 $valid = false;
                 $this->AddError($validator->GetMessage(), $key);
 
+            }
+        }
+
+        foreach($this->GetComparator() as $key => $comparator){
+            $key += count($this->GetValidators()); //Offset index in array by number of validators
+
+            $toCompare = $catalog->Get($comparator->GetName());
+            if($comparator->Validate($this->value, $toCompare->GetValue()) == FALSE){
+                $valid = false;
+                $this->AddError($comparator->GetMessage(), $key);
             }
         }
         return $valid;

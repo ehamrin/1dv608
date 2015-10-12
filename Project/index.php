@@ -37,6 +37,7 @@ $form->AddInput(
             new \Form\model\validation\Required("You must fill in a password"),
             new \Form\model\validation\MinLength(6, "Password must be longer than 6 characters")
         )
+        ->SetComparator(new \Form\model\comparator\EqualTo("RegistrationView::Password", "Must match Password"))
     ),
     (new \Form\model\input\Submit("RegistrationView::Register", "Register"))
 );

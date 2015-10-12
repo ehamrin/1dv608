@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Form\model\validation;
+namespace Form\model;
 
 
 abstract class Validation implements IValidation

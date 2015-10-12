@@ -4,7 +4,7 @@
 namespace Form\model\validation;
 
 
-class Email extends Validation
+class Email extends \Form\model\Validation
 {
     public function Validate($value) : \bool
     {
