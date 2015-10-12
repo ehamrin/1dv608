@@ -60,11 +60,32 @@ $form->AddInput(
     ((new input\Select("RegistrationView::SelectAge"))
         ->SetLabel("Age")
         ->AddOption(
-            new Option("17", 17),
-            new Option("18", 18),
-            new Option("19", 19)
+            new Option("10-17", 17),
+            new Option("18-25", 25),
+            new Option("25-30", 30),
+            new Option("30-35", 35),
+            new Option("35-40", 40),
+            new Option("40-45", 45),
+            new Option("45-50", 50)
         )
         ->SetValidation(new validation\LargerThanEqual(18, "You must be 18 or older to register"))
+    ),
+    ((new input\Textarea("RegistrationView::Bio"))
+        ->SetLabel("Describe yourself")
+        ->SetValidation(new validation\MaxLength(150, "You can only use 150 characters, don't write an essay!"))
+    ),
+    ((new input\Radio("RegistrationView::Gender"))
+        ->SetLabel("Pick gender")
+        ->AddOption(
+            new Option("Male", '1'),
+            new Option("Female", '2'),
+            new Option("Other", '3')
+        )
+        ->SetValidation(new validation\Required("You must select a gender"))
+    ),
+    ((new input\Checkbox("RegistrationView::Human"))
+        ->SetLabel("Are you human?")
+        ->SetValidation(new validation\Required("You must check this"))
     ),
     (new input\Submit("RegistrationView::Register", "Register"))
 );

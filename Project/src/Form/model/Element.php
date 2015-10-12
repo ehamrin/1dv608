@@ -6,13 +6,13 @@ namespace Form\model;
 
 abstract class Element implements IElement
 {
-    private $name;
-    private $label;
-    private $value;
-    private $template;
-    private $validator = array();
-    private $comparator = array();
-    private $error = array();
+    protected $name;
+    protected $label;
+    protected $value;
+    protected $template;
+    protected $validator = array();
+    protected $comparator = array();
+    protected $error = array();
 
     public function __construct($name, $value = "")
     {
