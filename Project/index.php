@@ -24,6 +24,12 @@ $form->AddInput(
             new \Form\model\validation\MaxLength(25, "Last name must be shorter than 25 characters")
         )
     ),
+    ((new \Form\model\input\Text("RegistrationView::PersonalIdentification"))
+        ->SetLabel("Personal ID")
+        ->SetValidation(
+            new \Form\model\validation\RegEx("/^(19|20)?[0-9]{6}(-)?[0-9pPtTfF][0-9]{3}$/", "Personal ID must match YYYYMMDD-XXXX")
+        )
+    ),
     ((new \Form\model\input\Password("RegistrationView::Password"))
         ->SetLabel("Password")
         ->SetValidation(
