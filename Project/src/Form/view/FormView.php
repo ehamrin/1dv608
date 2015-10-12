@@ -5,6 +5,7 @@ namespace Form\view;
 
 use \Form\model as model;
 
+class ViewFolderNotFoundException extends \Exception{}
 class InputViewNotFoundException extends \Exception{}
 class ElementMissingException extends \Exception{}
 class SessionMissingException extends \Exception{}
@@ -34,14 +35,24 @@ class FormView
 
     private function GetInputView(model\IElement $input){
         $extension = ".php";
-        $directory = "InputHTML/";
+        $directory = "InputHTML" . DIRECTORY_SEPARATOR;
+        $absoluteDirectory = __DIR__ . DIRECTORY_SEPARATOR . $directory;
         $file = $input->GetClassName() . $extension;
 
-        if(!empty($input->GetTemplateName())){
-            $file = $input->GetClassName() . '_' . $input->GetTemplateName() . $extension;
+        if(!is_dir($absoluteDirectory)){
+            throw new ViewFolderNotFoundException("Could not find the folder " . $absoluteDirectory);
         }
 
-        if(!is_file(__DIR__ . DIRECTORY_SEPARATOR . $directory . $file)){
+        if(!empty($input->GetTemplateName())){
+            $template = $input->GetClassName() . '_' . $input->GetTemplateName() . $extension;
+
+            if(is_file($absoluteDirectory . $template)){
+                $file = $template;
+            }
+
+        }
+
+        if(!is_file($absoluteDirectory . $file)){
             throw new InputViewNotFoundException("Could not find Input file {$file} in " . __DIR__ . DIRECTORY_SEPARATOR . $file);
         }
 
@@ -73,8 +84,8 @@ class FormView
 
     /*
      * Utilizes SESSION to store POST-data temporarily for use of PRG-pattern
-     * PRG is only used if a session is started elsewhere in the project, this is not not by the FormHandler
-     *
+     * PRG is only used if a session is started elsewhere in the project, this is not done by the FormHandler
+     * You can also change the use of PRG in the Settings file.
      */
     public function WasSubmitted() : \bool
     {

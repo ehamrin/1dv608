@@ -16,6 +16,10 @@ class LessThanEqual extends Validation
 
     public function Validate($value) : \bool
     {
+        if(!is_numeric($value)){
+            return false;
+        }
+
         return ($value <= $this->min);
     }
 }

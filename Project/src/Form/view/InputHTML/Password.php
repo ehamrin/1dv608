@@ -1,6 +1,6 @@
 <?php
 if(!isset($input)){
-    throw new ElementMissingException();
+    throw new \Form\view\ElementMissingException();
 }
 
 /*

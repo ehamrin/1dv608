@@ -5,14 +5,16 @@ namespace Form\controller;
 
 require_once dirname(__DIR__) . '/Settings.php';
 
-spl_autoload_register(function ($class) {
-    $class = str_replace("\\", DIRECTORY_SEPARATOR, $class);
-    $filename = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . $class . '.php';
+if(\Form\Settings::$UseFormAutoLoader) {
+    spl_autoload_register(function ($class) {
+        $class = str_replace("\\", DIRECTORY_SEPARATOR, $class);
+        $filename = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . $class . '.php';
 
-    if(file_exists($filename)){
-        require_once $filename;
-    }
-});
+        if (file_exists($filename)) {
+            require_once $filename;
+        }
+    });
+}
 
 class UnknownClassException extends \Exception{}
 
