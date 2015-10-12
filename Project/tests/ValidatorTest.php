@@ -1,9 +1,5 @@
 <?php
 
-
-namespace Form;
-
-
 require_once dirname(__DIR__) . '/src/Form/controller/FormController.php';
 
 class ValidatorTest extends \PHPUnit_Framework_TestCase
@@ -11,6 +7,8 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @class \Form\model\validator\LargerThanEqual
+     * @method Validate
      */
     public function LargerThanEqualValidator()
     {
@@ -28,6 +26,8 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @class \Form\model\validator\LargerThan
+     * @method Validate
      */
     public function LargerThanValidator()
     {
@@ -45,6 +45,8 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @class \Form\model\validator\LessThan
+     * @method Validate
      */
     public function LessThanValidator()
     {
@@ -62,8 +64,10 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @class \Form\model\validator\LessThanEqual
+     * @method Validate
      */
-    public function LessrThanEqualValidator()
+    public function LessThanEqualValidator()
     {
         $base = 3;
         $validator = new \Form\model\validation\LessThanEqual($base, "message");
@@ -80,6 +84,8 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @class \Form\model\validator\Required
+     * @method Validate
      */
     public function RequiredValidator()
     {
@@ -91,6 +97,8 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @class \Form\model\validator\MaxLength
+     * @method Validate
      */
     public function MaxLengthValidator()
     {
@@ -102,7 +110,10 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @test     */
+     * @test
+     * @class \Form\model\validator\MinLength
+     * @method Validate
+     */
     public function MinLengthValidator()
     {
         $validator = new \Form\model\validation\MinLength(10, "message");
