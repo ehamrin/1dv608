@@ -6,13 +6,15 @@ if(!isset($input, $errormessages, $attributes)){
 /*
  * Use variable $input to access methods
  *
- * @var $input \Form\model\Element
+ * @var $input \Form\model\dev\Text
  * @var $errormessage string
  * @var $attributes string
  */
 ?>
+
 <div class="form-group">
     <label for="<?php echo $input->GetName(); ?>"><?php echo $input->GetLabel(); ?></label>
-    <input type="text" name="<?php echo $input->GetName(); ?>" id="<?php echo $input->GetName(); ?>" value="<?php echo $input->GetValue(); ?>"  <?php echo $attributes; ?>/>
+    <input type="<?php echo $input->GetType(); ?>" name="<?php echo $input->GetName(); ?>" id="<?php echo $input->GetName(); ?>" value="<?php echo $input->GetValue(); ?>"  <?php echo $attributes; ?>/>
     <?php echo $errormessages; ?>
+
 </div>

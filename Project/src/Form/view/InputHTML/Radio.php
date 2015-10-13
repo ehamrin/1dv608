@@ -11,6 +11,7 @@ if(!isset($input, $errormessages, $attributes)){
  * @var $attributes string
  */
 ?>
+
 <div class="form-group">
     <label><?php echo $input->GetLabel(); ?></label>
     <?php foreach($input->GetOptions() as $option): ?>
@@ -20,4 +21,5 @@ if(!isset($input, $errormessages, $attributes)){
         </div>
     <?php endforeach; ?>
     <?php echo $errormessages; ?>
+
 </div>

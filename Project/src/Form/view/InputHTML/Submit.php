@@ -11,6 +11,7 @@ if(!isset($input, $errormessages, $attributes)){
  * @var $attributes string
  */
 ?>
+
 <div class="form-group">
     <button type="submit" name="<?php echo $input->GetName(); ?>" id="<?php echo $input->GetName(); ?>" value="<?php echo $input->GetValue(); ?>" <?php echo $attributes; ?>><?php echo $input->GetValue(); ?></button>
 </div>

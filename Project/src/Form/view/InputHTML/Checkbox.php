@@ -11,8 +11,10 @@ if(!isset($input, $errormessages, $attributes)){
  * @var $attributes string
  */
 ?>
+
 <div class="form-group">
     <label for="<?php echo $input->GetName(); ?>"><?php echo $input->GetLabel(); ?></label>
     <input type="checkbox" name="<?php echo $input->GetName(); ?>" id="<?php echo $input->GetName(); ?>" <?php echo $input->GetValue() ? 'checked="checked"' : ''; ?> <?php echo $attributes; ?>/>
     <?php echo $errormessages; ?>
+
 </div>

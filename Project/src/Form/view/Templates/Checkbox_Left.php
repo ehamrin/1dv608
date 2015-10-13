@@ -1,5 +1,5 @@
 <?php
-if(!isset($input)){
+if(!isset($input, $errormessages, $attributes)){
     throw new \Form\view\ElementMissingException();
 }
 
@@ -10,8 +10,9 @@ if(!isset($input)){
  * @var $errormessage HTMLstring
  */
 ?>
-<div class="form-group">
+<p class="info">
     <input type="checkbox" name="<?php echo $input->GetName(); ?>" id="<?php echo $input->GetName(); ?>" <?php echo $input->GetValue() ? 'checked="checked"' : ''; ?>/>
     <label for="<?php echo $input->GetName(); ?>"><?php echo $input->GetLabel(); ?></label>
     <?php echo $errormessages; ?>
-</div>
+
+</p>
