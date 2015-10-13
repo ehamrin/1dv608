@@ -28,7 +28,13 @@ class FormController
     public function __construct(\string $formName){
         $this->name = $formName;
         $this->inputCatalog = new model\InputCatalog();
-        $this->view = new view\FormView($this->name, $this->inputCatalog, \Form\Settings::$UsePRG, \Form\Settings::$TemplateDirectory);
+
+        $this->view = new view\FormView(
+            $this->name,
+            $this->inputCatalog,
+            \Form\Settings::$UsePRG,
+            \Form\Settings::$TemplateDirectory
+        );
     }
 
     public function AddInput(model\ElementFacade ...$toBeAdded){
@@ -53,7 +59,7 @@ class FormController
 
     public function GetData(){
         if(!$this->IsValid()){
-            throw new \Exception("The data is not properly validated, always wrap method call inside FormController::WasSubmitted()");
+            throw new \Exception("The data is not properly validated, always wrap Form::GetData() call inside FormController::WasSubmitted()");
         }
         return $this->inputCatalog->Export();
     }

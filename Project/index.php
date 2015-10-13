@@ -69,6 +69,10 @@ $form->AddInput(
             new Option("45-50", 50)
         )
         ->SetValidation(new validation\LargerThanEqual(18, "You must be 18 or older to register"))
+        ->SetAttributes(
+            new Option("data-id", 3),
+            new Option("onchange", "alert('I have an extra attribute defined, but YOU should not use inline JavaScript')")
+        )
     ),
     ((new input\Textarea("RegistrationView::Bio"))
         ->SetLabel("Describe yourself")
@@ -101,13 +105,14 @@ $form->AddInput(
 $data = "";
 if($form->WasSubmitted()){
     $data = $form->GetData();
+
+    //Do your own validation here, like "UserExists" etc.
     $usernames = array(
         "kalle",
         "daniel",
         "erik"
     );
 
-    //Do your own validation here, like "UserExists" etc.
     $userExists = false;
     foreach($usernames as $username){
         if($data['RegistrationView::Username'] == $username){
@@ -127,10 +132,10 @@ if($form->WasSubmitted()){
 <!DOCTYPE html>
 <html>
 <head lang="en">
-        <meta charset="UTF-8">
-        <title>Form Wrapper and Validator</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link href="style.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <title>Form Wrapper and Validator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="style.css" rel="stylesheet">
 </head>
 <body>
 

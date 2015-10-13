@@ -1,5 +1,5 @@
 <?php
-if(!isset($input)){
+if(!isset($input, $errormessages, $attributes)){
     throw new \Form\view\ElementMissingException();
 }
 
@@ -7,15 +7,16 @@ if(!isset($input)){
  * Use variable $input to access methods
  *
  * @var $input \Form\model\input\dev\Radio
- * @var $errormessage HTMLstring
+ * @var $errormessage string
+ * @var $attributes string
  */
 ?>
 <div class="form-group">
     <label><?php echo $input->GetLabel(); ?></label>
     <?php foreach($input->GetOptions() as $option): ?>
         <div class="radio-group">
-            <input id="<?php echo $input->GetName() . '_' . $option->name; ?>" name="<?php echo $input->GetName(); ?>" type="radio" value="<?php echo $option->value; ?>" <?php echo $option->value == $input->GetValue() ? 'checked="checked"' : ''; ?> />
-            <label for="<?php echo $input->GetName() . '_' . $option->name; ?>"><?php echo $option->name; ?></label>
+            <input id="<?php echo $input->GetName() . '_' . $option->GetName(); ?>" name="<?php echo $input->GetName(); ?>" type="radio" value="<?php echo $option->GetValue(); ?>" <?php echo $option->GetValue() == $input->GetValue() ? 'checked="checked"' : ''; ?> />
+            <label for="<?php echo $input->GetName() . '_' . $option->GetName(); ?>"><?php echo $option->GetName(); ?></label>
         </div>
     <?php endforeach; ?>
     <?php echo $errormessages; ?>

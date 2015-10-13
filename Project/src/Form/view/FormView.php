@@ -71,6 +71,13 @@ class FormView
             throw new InputViewNotFoundException("Could not find Input file {$file} in " . __DIR__ . DIRECTORY_SEPARATOR . $file);
         }
 
+        $attributes = array();
+        foreach ($input->GetAttributes() as $option) {
+            /* @var $option \Form\model\Option */
+            $attributes[] = $option->GetName() . '="' . $option->GetValue() . '"';
+        }
+        $attributes = implode(' ', $attributes);
+
         $errormessages = $this->submitted ? $this->GetErrorMessageHTML($input->GetErrorMessage()) : '';
 
         ob_start();

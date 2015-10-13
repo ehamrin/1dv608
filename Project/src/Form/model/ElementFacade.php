@@ -37,6 +37,10 @@ abstract class ElementFacade
         $this->object->SetValidation(...$validators);
         return $this;
     }
+    public function SetAttributes(Option ...$attributes){
+        $this->object->SetAttributes(...$attributes);
+        return $this;
+    }
 
     public function SetComparator(IComparator ...$comparators){
         $this->object->SetComparator(...$comparators);

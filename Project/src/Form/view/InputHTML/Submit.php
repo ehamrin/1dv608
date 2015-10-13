@@ -1,5 +1,5 @@
 <?php
-if(!isset($input)){
+if(!isset($input, $errormessages, $attributes)){
     throw new \Form\view\ElementMissingException();
 }
 
@@ -7,9 +7,10 @@ if(!isset($input)){
  * Use variable $input to access methods
  *
  * @var $input \Form\model\Element
- * @var $errormessage HTMLstring
+ * @var $errormessage string
+ * @var $attributes string
  */
 ?>
 <div class="form-group">
-    <button type="submit" name="<?php echo $input->GetName(); ?>" id="<?php echo $input->GetName(); ?>" value="<?php echo $input->GetValue(); ?>"><?php echo $input->GetValue(); ?></button>
+    <button type="submit" name="<?php echo $input->GetName(); ?>" id="<?php echo $input->GetName(); ?>" value="<?php echo $input->GetValue(); ?>" <?php echo $attributes; ?>><?php echo $input->GetValue(); ?></button>
 </div>

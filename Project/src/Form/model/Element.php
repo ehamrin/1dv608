@@ -11,6 +11,7 @@ abstract class Element implements IElement
     protected $value;
     protected $template;
     protected $validator = array();
+    protected $attribute = array();
     protected $comparator = array();
     protected $error = array();
 
@@ -48,6 +49,19 @@ abstract class Element implements IElement
     public function SetValue($value)
     {
         $this->value = $value;
+    }
+
+    public function SetAttributes(Option ...$options)
+    {
+        $this->attribute = $options;
+    }
+
+    /**
+     * @return Option[]
+     */
+    public function GetAttributes()
+    {
+        return $this->attribute;
     }
 
     public function SetLabel(\string $label)
