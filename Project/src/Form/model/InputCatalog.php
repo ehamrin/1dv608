@@ -62,7 +62,7 @@ class InputCatalog
         foreach($this->GetAll() as $input){
             $value = $input->Export();
             if($value !== null) {
-                $ret = $this->array_merge_recursive_new($ret, $value);
+                $ret = $this->array_merge($ret, $value);
             }
         }
 
@@ -70,12 +70,21 @@ class InputCatalog
 
     }
 
-    private function array_merge_recursive_new($base, ...$arrays) {
+    /**
+     * Version of array_merge_recursive without overwriting numeric keys
+     *
+     * @param  array $array1 Initial array to merge.
+     * @param  array ...     Variable list of arrays to recursively merge.
+     *
+     * @link   https://gist.github.com/ptz0n/1646171
+     * @author Martyniuk Vasyl <martyniuk.vasyl@gmail.com>
+     */
+    private function array_merge($base, ...$arrays) {
         foreach ($arrays as $array) {
             reset($base); //important
             while (list($key, $value) = @each($array)) {
                 if (is_array($value) && @is_array($base[$key])) {
-                    $base[$key] = $this->array_merge_recursive_new($base[$key], $value);
+                    $base[$key] = $this->array_merge($base[$key], $value);
                 } else {
                     $base[$key] = $value;
                 }
