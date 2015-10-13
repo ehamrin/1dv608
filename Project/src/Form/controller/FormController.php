@@ -52,6 +52,9 @@ class FormController
     }
 
     public function GetData(){
+        if(!$this->IsValid()){
+            throw new \Exception("The data is not properly validated, always wrap method call inside FormController::WasSubmitted()");
+        }
         return $this->inputCatalog->Export();
     }
 
@@ -59,8 +62,8 @@ class FormController
         $this->inputCatalog->Get($input)->AddError($message);
     }
 
-    public function InjectFormError(\string $message){
-
+    public function InjectFormError(\string ...$messages){
+        $this->inputCatalog->AddError(...$messages);
     }
 
 }

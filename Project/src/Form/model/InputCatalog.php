@@ -38,8 +38,7 @@ class InputCatalog
     public function UpdateValues(array $data)
     {
         foreach($this->GetAll() as $input){
-            $value = isset($data[$input->GetName()]) ? $data[$input->GetName()] : '';
-            $input->SetValue($value);
+            $input->UpdateValue($data);
         }
     }
 
@@ -62,13 +61,28 @@ class InputCatalog
 
         foreach($this->GetAll() as $input){
             $value = $input->Export();
-            if($input->Export() !== null) {
-                $ret[$input->GetName()] = $value;
+            if($value !== null) {
+                $ret = $this->array_merge_recursive_new($ret, $value);
             }
         }
 
         return $ret;
 
+    }
+
+    private function array_merge_recursive_new($base, ...$arrays) {
+        foreach ($arrays as $array) {
+            reset($base); //important
+            while (list($key, $value) = @each($array)) {
+                if (is_array($value) && @is_array($base[$key])) {
+                    $base[$key] = $this->array_merge_recursive_new($base[$key], $value);
+                } else {
+                    $base[$key] = $value;
+                }
+            }
+        }
+
+        return $base;
     }
 
     public function AddError(...$messages){

@@ -25,7 +25,8 @@ class FormView
     }
 
     public function GetView(){
-        $ret = '<form action="" method="POST" id="' . $this->formName . '">';
+        $ret = '<form action="" method="POST" id="' . $this->formName . '">' . PHP_EOL;
+        $ret .= $this->GetErrorMessageHTML($this->inputCatalog->GetError());
         foreach($this->inputCatalog->GetAll() as $input){
             $ret .= $this->GetInputView($input);
         }
@@ -56,22 +57,24 @@ class FormView
             throw new InputViewNotFoundException("Could not find Input file {$file} in " . __DIR__ . DIRECTORY_SEPARATOR . $file);
         }
 
-        $errormessages = $this->submitted ? $this->GetErrorMessageHTML($input) : '';
+        $errormessages = $this->submitted ? $this->GetErrorMessageHTML($input->GetErrorMessage()) : '';
 
         ob_start();
         include($directory . $file);
         return ob_get_clean();
     }
 
-    private function GetErrorMessageHTML(model\IElement $input){
+    private function GetErrorMessageHTML(array $messages){
         $list = "";
 
-        foreach($input->GetErrorMessage() as $message){
-            $list .= '<li>' . $message . '</li>';
+        foreach($messages as $message){
+            $list .= '<li>' . $message . '</li>' . PHP_EOL;
         }
 
+
+
         if(!empty($list)){
-            $list = '<ul class="error-messages">' . $list . '</ul>';
+            $list = '<ul class="error-messages">' . PHP_EOL . $list . '</ul>' . PHP_EOL;
         }
 
         return $list;

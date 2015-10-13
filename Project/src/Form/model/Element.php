@@ -126,6 +126,27 @@ abstract class Element implements IElement
     }
 
     public function Export(){
-        return $this->GetValue();
+        $name = str_replace(']', '', $this->name);
+        $name = explode('[',$name);
+        $name = array_reverse($name, true);
+
+        $array = $this->GetValue();
+        foreach($name as $index){
+            $array = array($index => $array);
+        }
+        return $array;
+    }
+
+    public function UpdateValue(array $data){
+        $name = str_replace(']', '', $this->name);
+        $name = explode('[',$name);
+
+        foreach($name as $index){
+            if(isset($data[$index])){
+                $data = $data[$index];
+            }
+        }
+
+        $this->value = !is_array($data) ? $data : '';
     }
 }

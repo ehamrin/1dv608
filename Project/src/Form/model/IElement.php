@@ -19,5 +19,6 @@ interface IElement
     public function GetValue();
     public function Export();
     public function SetValue($value);
+    public function UpdateValue(array $data);
     public function AddError(\string $message, \string $key = null);
 }

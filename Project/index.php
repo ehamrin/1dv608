@@ -87,13 +87,23 @@ $form->AddInput(
         ->SetLabel("Are you human?")
         ->SetValidation(new validation\Required("You must check this"))
     ),
+    ((new input\Checkbox("RegistrationView::Template"))
+        ->SetLabel("Using template")
+        ->SetTemplateName("Left")
+    ),
+    ((new input\Checkbox("test[employee][3]"))
+        ->SetLabel("Using template")
+        ->SetTemplateName("Left")
+    ),
     (new input\Submit("RegistrationView::Register", "Register"))
 );
 
 $message = "";
 if($form->WasSubmitted()){
-    var_dump($form->GetData());
-    $message = "Successfully submitted the form";
+    $message = $form->GetData();
+    //Do your own validation here, like "UserExists" etc.
+    //$form->InjectFormError("The user already exists, please pick a different one");
+    //$form->InjectInputError("RegisterView::Username", "Please pick a different username");
 }
 
 ?>
@@ -109,7 +119,7 @@ if($form->WasSubmitted()){
 <body>
 
 <h1>1DV608 Project</h1>
-<p><?php echo $message; ?></p>
+<pre><?php if($message != "") var_dump($message); ?></pre>
 <?php echo $form->GetView(); ?>
 
 </body>

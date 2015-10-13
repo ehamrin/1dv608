@@ -8,9 +8,11 @@ class Checkbox extends \Form\model\Element
 {
     public function Export(){
         if(\Form\Settings::$PopulateCheckboxIndex == true){
-            return (bool)$this->GetValue();
-        }elseif(\Form\Settings::$PopulateCheckboxIndex == false && !empty($this->GetValue())){
-            return $this->GetValue();
+            $this->value = (bool)$this->GetValue();
+        }
+
+        if(!empty($this->GetValue())){
+            return parent::Export();
         }
 
         return null;
