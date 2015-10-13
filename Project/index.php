@@ -78,7 +78,7 @@ $form->AddInput(
         ->SetValidation(new validation\LargerThanEqual(18, "You must be 18 or older to register"))
         ->SetAttributes(
             new Option("data-id", 3),
-            new Option("onchange", "alert('I have an extra attribute defined, but YOU should not use inline JavaScript')")
+            new Option("onchange", "alert('I have an extra attribute defined, but you should NOT use inline JavaScript, it is not pretty, but it lets you know what is available')")
         )
     ),
     ((new input\Textarea("RegistrationView::Bio"))
@@ -148,7 +148,10 @@ if($form->WasSubmitted()){
 <body>
 
 <h1>1DV608 Project</h1>
-<p class="info center">This form required ~115 lines of code <em>(Without the user exists example)</em>. The HTML you'd have to write is about the same, and that is <strong>without</strong> validation.</p>
+<p class="info center">
+    This form required ~115 lines of code <em>(Without the user exists example)</em>. <br/>
+    The HTML you'd have to write is about the same, and that is <strong>without</strong> validation.
+</p>
 <pre class="result"><?php if($data != "") var_dump($data); ?></pre>
 <?php echo $form->GetView(); ?>
 
