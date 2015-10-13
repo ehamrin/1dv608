@@ -5,6 +5,7 @@ namespace Form\view;
 
 use \Form\model as model;
 
+class TemplateFolderNotFoundException extends \Exception{}
 class ViewFolderNotFoundException extends \Exception{}
 class InputViewNotFoundException extends \Exception{}
 class ElementMissingException extends \Exception{}
@@ -17,11 +18,18 @@ class FormView
     private $submitted = false;
     private $formName;
     private $usePRG;
+    private $templateDirectory;
 
-    public function __construct(\string $formName, model\InputCatalog $inputCatalog, \bool $usePRG){
+    public function __construct(\string $formName, model\InputCatalog $inputCatalog, \bool $usePRG, \string $templateDirectory){
         $this->formName = $formName;
         $this->usePRG = $usePRG;
         $this->inputCatalog = $inputCatalog;
+
+        $templateDirectory = rtrim($templateDirectory,DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
+        if(!is_dir($templateDirectory)){
+            throw new TemplateFolderNotFoundException('The template folder "' . $templateDirectory . '" specified in Settings does not appear to be valid!');
+        }
+        $this->templateDirectory = $templateDirectory;
     }
 
     public function GetView(){
@@ -44,13 +52,19 @@ class FormView
             throw new ViewFolderNotFoundException("Could not find the folder " . $absoluteDirectory);
         }
 
+
+        if(is_file($this->templateDirectory . $file)){
+
+            $absoluteDirectory = $this->templateDirectory;
+        }
+
         if(!empty($input->GetTemplateName())){
             $template = $input->GetClassName() . '_' . $input->GetTemplateName() . $extension;
 
-            if(is_file($absoluteDirectory . $template)){
+            if(is_file($this->templateDirectory . $template)){
                 $file = $template;
+                $absoluteDirectory = $this->templateDirectory;
             }
-
         }
 
         if(!is_file($absoluteDirectory . $file)){
@@ -60,7 +74,7 @@ class FormView
         $errormessages = $this->submitted ? $this->GetErrorMessageHTML($input->GetErrorMessage()) : '';
 
         ob_start();
-        include($directory . $file);
+        include($absoluteDirectory . $file);
         return ob_get_clean();
     }
 

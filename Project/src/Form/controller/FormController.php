@@ -28,7 +28,7 @@ class FormController
     public function __construct(\string $formName){
         $this->name = $formName;
         $this->inputCatalog = new model\InputCatalog();
-        $this->view = new view\FormView($this->name, $this->inputCatalog, \Form\Settings::$UsePRG);
+        $this->view = new view\FormView($this->name, $this->inputCatalog, \Form\Settings::$UsePRG, \Form\Settings::$TemplateDirectory);
     }
 
     public function AddInput(model\ElementFacade ...$toBeAdded){
