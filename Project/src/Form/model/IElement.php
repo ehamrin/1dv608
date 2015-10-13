@@ -17,6 +17,7 @@ interface IElement
     public function GetErrorMessage();
     public function GetClassName();
     public function GetValue();
+    public function Export();
     public function SetValue($value);
     public function AddError(\string $message, \string $key = null);
 }

@@ -124,4 +124,8 @@ abstract class Element implements IElement
         $array = explode('\\', $class);
         return array_pop($array);
     }
+
+    public function Export(){
+        return $this->GetValue();
+    }
 }

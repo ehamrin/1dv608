@@ -9,6 +9,7 @@ class InputDoesNotExistException extends \Exception{}
 class InputCatalog
 {
     private $input = array();
+    private $error = array();
 
     public function Add(IElement $toBeAdded){
         foreach($this->GetAll() as $input){
@@ -60,21 +61,22 @@ class InputCatalog
         $ret = array();
 
         foreach($this->GetAll() as $input){
-            if($input->GetClassName() == "Checkbox"){
-                if(\Form\Settings::$PopulateCheckboxIndex == false && !empty($input->GetValue())){
-                    $ret[$input->GetName()] = $input->GetValue();
-                }elseif(\Form\Settings::$PopulateCheckboxIndex == true){
-                    $ret[$input->GetName()] = (bool)$input->GetValue();
-                }
-            }elseif($input->GetClassName() == "Submit" && \Form\Settings::$PopulateSubmitIndex == FALSE){
-                //Ignore submit button
-            }else{
-                $ret[$input->GetName()] = $input->GetValue();
+            $value = $input->Export();
+            if($input->Export() !== null) {
+                $ret[$input->GetName()] = $value;
             }
-
         }
 
         return $ret;
 
     }
+
+    public function AddError(...$messages){
+        $this->error = $messages;
+    }
+
+    public function GetError(){
+        return $this->error;
+    }
+
 }
