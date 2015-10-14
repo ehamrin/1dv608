@@ -11,7 +11,7 @@ class Checkbox extends \Form\model\Element
             $this->value = (bool)$this->GetValue();
         }
 
-        if(!empty($this->GetValue())){
+        if(!empty($this->GetValue()) || $this->GetValue() === FALSE){
             return parent::Export();
         }
 
