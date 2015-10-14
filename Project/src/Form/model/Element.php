@@ -3,6 +3,7 @@
 
 namespace Form\model;
 
+class AttributeNotAllowedException extends \Exception {}
 
 abstract class Element implements IElement
 {
@@ -53,7 +54,21 @@ abstract class Element implements IElement
 
     public function SetAttributes(Option ...$options)
     {
-        $this->attribute = $options;
+        foreach($options as $option){
+            /* @var $option Option */
+            switch($option->GetName()){
+                case 'name':
+                case 'id':
+                case 'type':
+                case 'value':
+                    throw new AttributeNotAllowedException('The attribute "' . $option->GetName() . '" is not allowed since it is most likely being used by the view file');
+                    break;
+                default:
+                    $this->attribute[] = $option;
+                    break;
+
+            }
+        }
     }
 
     /**
