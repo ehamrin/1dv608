@@ -1,4 +1,5 @@
 <?php
+$start_time = microtime(TRUE);
 session_start();
 require_once 'src/Form/controller/FormController.php';
 
@@ -111,28 +112,9 @@ $form->AddInput(
     (new input\Submit("RegistrationView::Register", "Register"))
 );
 
-$data = "";
+
 if($form->WasSubmitted()){
     $data = $form->GetData();
-
-    //Do your own validation here, like "UserExists" etc.
-    $usernames = array(
-        "kalle",
-        "daniel",
-        "erik"
-    );
-
-    $userExists = false;
-    foreach($usernames as $username){
-        if($data['RegistrationView::Username'] == $username){
-            $userExists = true;
-        }
-    }
-    if($userExists){
-        $data = "";
-        $form->InjectFormError("The user already exists, please pick a different one");
-        $form->InjectInputError("RegistrationView::Username", "Please pick a different username");
-    }
 }
 
 ?>
@@ -150,15 +132,16 @@ if($form->WasSubmitted()){
 <h1>1DV608 Project</h1>
 <p class="info center">
     This form required ~115 lines of code <em>(Without the user exists example)</em>. <br/>
-    The HTML you'd have to write is about the same, and that is <strong>without</strong> validation.
+    The HTML you'd have to write is about the same, and that is <strong>without</strong> validation.<br/>
+    <small>Execution time: <?php echo round(microtime(TRUE) - $start_time, 4); ?>s</small>
 </p>
-<pre class="result"><?php if($data != "") var_dump($data); ?></pre>
+<pre class="result"><?php if(isset($data)) var_dump($data); ?></pre>
 <?php echo $form->GetView(); ?>
 
 <div class="gist">
     <h2>Source code</h2>
     <span><em>(<a href="http://gist-it.appspot.com/">http://gist-it.appspot.com/</a>)</em></span>
-    <script src="http://gist-it.appspot.com/https://github.com/ehamrin/1dv608/blob/project/Project/index.php?footer=0"></script>
+    <script src="http://gist-it.appspot.com/https://github.com/ehamrin/1dv608/blob/project/Project/example-usage.php?footer=0"></script>
 </div>
 
 <div class="source-code"><a href="https://github.com/ehamrin/1dv608/tree/project/Project" target="_blank">See it on GitHub!</a></div>
