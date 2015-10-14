@@ -22,7 +22,7 @@ atlassian-ide-plugin.xml
 
 #Settings file
 2/*
-4/*
+4/Settings.php
 Project/phpunit/*
 
 

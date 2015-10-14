@@ -3,6 +3,8 @@ declare(strict_types=STRICT_TYPING);
 
 namespace view;
 
+require_once APPLICATION_URI . 'vendors/Form/controller/FormController.php';
+
 class LoginView
 {
     private static $formLogin = "LoginView::Login";
@@ -14,8 +16,11 @@ class LoginView
     private static $fromForm = "Login through form";
     private static $fromCookie = "Login through cookie";
 
+    private $formData = array();
+    private $form;
+    private $logoutform;
+
     private $loginMethod;
-    private $message;
     private $persistent_login_view;
     private $model;
     private $navigationView;
@@ -25,16 +30,53 @@ class LoginView
         $this->persistent_login_view = new PersistentLoginView();
         $this->model = $model;
         $this->navigationView = $nv;
+        $this->form = $this->GenerateLoginForm();
+        $this->logoutform = $this->GenerateLogoutForm();
     }
 
+    public function GenerateLoginForm() : \Form\controller\FormController
+    {
+
+        $form = new \Form\controller\FormController("LoginView::LoginForm");
+        $form->AddInput(
+            (new \Form\model\input\Text(self::$formUser))
+                ->SetLabel("Username:")
+                ->SetValidation(
+                    new \Form\model\validation\Required("Username missing")
+                )
+            ,
+            (new \Form\model\input\Password(self::$formPassword))
+                ->SetLabel("Password:")
+                ->SetValidation(
+                    new \Form\model\validation\Required("Password missing")
+                )
+            ,
+            (new \Form\model\input\Checkbox(self::$formKeep))
+                ->SetLabel("Keep me logged in:")
+            ,
+            (new \Form\model\input\Submit(self::$formLogin, "Log in"))
+        );
+
+        return $form;
+    }
+    public function GenerateLogoutForm() : \Form\controller\FormController
+    {
+
+        $form = new \Form\controller\FormController("LoginView::LoginForm");
+        $form->AddInput(
+            (new \Form\model\input\Submit(self::$formLogout, "Log out"))
+        );
+
+        return $form;
+    }
     public function UserAttemptedLogin() : \bool
     {
-        return isset($_POST[self::$formLogin]) && $this->FormIsCorrect() || $this->persistent_login_view->UserHasPersistentLogin();
+        return $this->FormIsCorrect() || $this->persistent_login_view->UserHasPersistentLogin();
     }
 
     public function UserAttemptedLogout() : \bool
     {
-        return isset($_POST[self::$formLogout]);
+        return $this->logoutform->WasSubmitted();
     }
 
     public function GetClientIdentifier() : \string
@@ -84,7 +126,7 @@ class LoginView
     {
         if($this->loginMethod == self::$fromForm){
 
-            $this->message = "Wrong name or password";
+            $this->form->InjectFormError("Wrong name or password");
 
         }elseif($this->loginMethod == self::$fromCookie){
 
@@ -112,23 +154,27 @@ class LoginView
 
     private function FormIsCorrect() : \bool
     {
-        try{
-            new \model\UserCredentials($this->GetUsername(), $this->GetPassword());
-            return true;
-        }catch(\PasswordTooShortException $e){
-            $this->message = "Password is missing";
-        }catch(\UsernameTooShortException $e){
-            $this->message = "Username is missing";
-        }catch(\Exception $e){
-            $this->message = "Wrong name or password";
+        if($this->form->WasSubmitted()) {
+            $this->formData = $this->form->GetData();
+
+            try {
+                new \model\UserCredentials($this->GetUsername(), $this->GetPassword());
+                return true;
+            } catch (\PasswordTooShortException $e) {
+                $this->form->InjectFormError("Password is missing");
+            } catch (\UsernameTooShortException $e) {
+                $this->form->InjectFormError("Username is missing");
+            } catch (\Exception $e) {
+                $this->form->InjectFormError("Wrong name or password");
+            }
         }
         return false;
     }
 
     private function GetUsername() : \string
     {
-        if(isset($_POST[self::$formUser])){
-            return $_POST[self::$formUser];
+        if(isset($this->formData[self::$formUser])){
+            return $this->formData[self::$formUser];
         }
 
         return RegistrationCookiePersistance::Retrieve();
@@ -136,44 +182,31 @@ class LoginView
 
     private function GetPassword() : \string
     {
-        return $_POST[self::$formPassword] ?? '';
+        return $this->formData[self::$formPassword] ?? '';
     }
 
     private function KeepUserLoggedIn() : \bool
     {
-        return isset($_POST[self::$formKeep]);
+        return $this->formData[self::$formKeep];
     }
 
     private function GetLoginForm() : \string
     {
-        return $this->navigationView->GetRegistrationLink() . '
-        <form method="post" >
-            <fieldset>
-                <legend>LoginView - enter Username and password</legend>
-                <p id="' . self::$formMessage . '">' . $this->message . CookieMessageView::Retrieve() . '</p>
+        $message = CookieMessageView::Retrieve();
+        if(!empty($message)){
+            $message = '<p class="info">' . $message . '</p>';
+        }
 
-                <label for="' . self::$formUser . '">Username :</label>
-                <input type="text" id="' . self::$formUser . '" name="' . self::$formUser . '" value="' . $this->GetUsername() . '" />
-
-                <label for="' . self::$formPassword . '">Password :</label>
-                <input type="password" id="' . self::$formPassword . '" name="' . self::$formPassword . '" />
-
-                <label for="' . self::$formKeep . '">Keep me logged in  :</label>
-                <input type="checkbox" id="' . self::$formKeep . '" name="' . self::$formKeep . '" />
-
-                <input type="submit" name="' . self::$formLogin . '" value="login" />
-            </fieldset>
-        </form>';
+        return $this->navigationView->GetRegistrationLink() . $message . $this->form->GetView();
     }
 
     private function GetLogoutForm() : \string
     {
-        return '
-        <form  method="post" >
-				<p id="' . self::$formMessage . '">' . CookieMessageView::Retrieve() .'</p>
-				<input type="submit" name="' . self::$formLogout . '" value="logout"/>
-			</form>
-        ';
+        $message = CookieMessageView::Retrieve();
+        if(!empty($message)){
+            $message = '<p class="info" id="' . self::$formMessage . '">' . $message . '</p>';
+        }
+        return $message . $this->logoutform->GetView();
     }
 
     private function SetTemporaryMessage(\string $message)
