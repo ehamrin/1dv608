@@ -117,7 +117,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
     public function MinLengthValidator()
     {
         $validator = new \Form\model\validation\MinLength(10, "message");
-        $this->assertFalse($validator->Validate(""), 'Empty string should fail');
+        $this->assertTrue($validator->Validate(""), 'Empty string should pass, that is up to the Required validator');
         $this->assertTrue($validator->Validate("abcdefghijk"), 'String with "abcdefghijk" (11 characters) should pass Min 10 characters');
         $this->assertTrue($validator->Validate("abcdefghij"), 'String with "abcdefghij" (10 characters) should fail Min 10 characters');
         $this->assertFalse($validator->Validate("abcdefg"), 'String with "abcdefg" (7 characters) should fail Min 10 characters');

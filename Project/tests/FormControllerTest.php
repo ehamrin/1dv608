@@ -116,7 +116,7 @@ class FormControllerTest extends PHPUnit_Framework_TestCase
             ,
             new \Form\model\input\Submit("submit", "Send")
         );
-        $this->assertTrue($form->WasSubmitted());
+        $this->assertTrue($form->WasSubmitted(), "Form did not submit");
 
         $message = "This is an errormessage";
         $form->InjectInputError('username', $message);
@@ -127,8 +127,8 @@ class FormControllerTest extends PHPUnit_Framework_TestCase
         $xpath = new \DOMXpath($dom);
         $result = $xpath->query('//ul[@class="error-messages"]');
 
-        $this->assertTrue($result->length == 1);
-        $this->assertTrue($result->item(0)->textContent == $message);
+        $this->assertTrue($result->length == 1, "Did not find erro message element");
+        $this->assertTrue(trim($result->item(0)->textContent) == $message, "Failed asserting that them message matches to one injected");
     }
 
     /**

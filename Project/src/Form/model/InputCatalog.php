@@ -102,4 +102,14 @@ class InputCatalog
         return $this->error;
     }
 
+    public function UpdateValue(\string $input, $value){
+        if(!isset($this->input[$input])){
+            throw new InputDoesNotExistException("The element you're looking for does not exist");
+        }
+
+        $object = $this->input[$input];
+        /* @var $object \Form\model\Element */
+        $object->SetValue($value);
+    }
+
 }

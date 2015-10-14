@@ -131,8 +131,8 @@ if($form->WasSubmitted()){
 
 <h1>1DV608 Project</h1>
 <p class="info center">
-    This form required ~115 lines of code <em>(Without the user exists example)</em>. <br/>
-    The HTML you'd have to write is about the same, and that is <strong>without</strong> validation.<br/>
+    This form required ~115 lines of code. <br/>
+    The HTML you'd have to write is about the same, and that is without <strong>any</strong> validation.<br/>
     <small>Execution time: <?php echo round(microtime(TRUE) - $start_time, 4); ?>s</small>
 </p>
 <pre class="result"><?php if(isset($data)) var_dump($data); ?></pre>

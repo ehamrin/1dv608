@@ -72,4 +72,8 @@ class FormController
         $this->inputCatalog->AddError(...$messages);
     }
 
+    public function UpdateValue(\string $input, $value){
+        $this->inputCatalog->UpdateValue($input, $value);
+    }
+
 }
