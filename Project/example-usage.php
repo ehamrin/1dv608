@@ -137,7 +137,7 @@ if($form->WasSubmitted()){
 </p>
 <p class="warning center">
     For a more complex example, see <a href="https://github.com/ehamrin/1dv608/tree/master/Project_4" target="_blank">Assignment 4 for course 1DV608</a> with the Form Handler integrated.<br/>
-    The form is used in <a href="https://github.com/ehamrin/1dv608/blob/project/Project_4/src/view/RegistrationView.php" target="_blank"><code>src/view/RegistrationView</code></a> and <a href="https://github.com/ehamrin/1dv608/blob/project/Project_4/src/view/LoginView.php" target="_blank"><code>src/view/LoginView</code></a><br/>
+    The form is used in <a href="https://github.com/ehamrin/1dv608/blob/master/Project_4/src/view/RegistrationView.php" target="_blank"><code>src/view/RegistrationView</code></a> and <a href="https://github.com/ehamrin/1dv608/blob/master/Project_4/src/view/LoginView.php" target="_blank"><code>src/view/LoginView</code></a><br/>
     The application can be tested live <a href="http://1dv608.erikhamrin.se/Project_4/" target="_blank">here</a>
 
 </p>
