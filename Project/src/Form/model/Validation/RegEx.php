@@ -32,6 +32,6 @@ class RegEx extends \Form\model\Validation
 
     public function Validate($value) : \bool
     {
-        return preg_match($this->regex , $value);
+        return empty($value) || preg_match($this->regex , $value);
     }
 }

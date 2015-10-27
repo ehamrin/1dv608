@@ -8,6 +8,6 @@ class Email extends \Form\model\Validation
 {
     public function Validate($value) : \bool
     {
-        return filter_var($value, FILTER_VALIDATE_EMAIL);
+        return empty($value) || filter_var($value, FILTER_VALIDATE_EMAIL);
     }
 }

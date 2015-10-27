@@ -20,6 +20,6 @@ class LargerThanEqual extends \Form\model\Validation
             return false;
         }
 
-        return ($value >= $this->max);
+        return empty($value) || ($value >= $this->max);
     }
 }

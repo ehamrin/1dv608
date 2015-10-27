@@ -8,6 +8,6 @@ class Numeric extends \Form\model\Validation
 {
     public function Validate($value) : \bool
     {
-        return is_numeric($value);
+        return empty($value) || is_numeric($value);
     }
 }

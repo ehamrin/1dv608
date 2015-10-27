@@ -57,12 +57,16 @@ nav{
     text-align: center;
     margin-top: 10px;
 }
-p.error,p.success, p.info{
+p.error,p.success, p.info, p.warning{
     padding: 10px;
 }
 
 .center{
     text-align: center;
+}
+
+.warning.center{
+    margin-top: -16px;
 }
 
 .source-code{
@@ -195,6 +199,12 @@ input[type="checkbox"]
     border: 1px solid #204d74;
 }
 
+.warning{
+    background-color: #f0e9b7;
+    color: #615410;
+    border: 1px solid #615410;
+}
+
 button{
     display: block;
     width: 230px;
@@ -276,6 +286,96 @@ button:hover{
     max-width: 600px;
     margin: 0 auto;
 }
+
+
+/*
+ *   Switch https://proto.io/freebies/onoff/
+ */
+
+.onoffswitch {
+    position: relative;
+    width: 86px;
+    display: inline-block;
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select: none;
+}
+.onoffswitch-checkbox {
+    display: none;
+}
+
+.form-group .onoffswitch-label, .onoffswitch-label {
+    display: block;
+    overflow: hidden;
+    cursor: pointer;
+    border: 2px solid #757575;
+    border-radius: 50px;
+
+    width: auto;
+    text-align: inherit;
+    box-sizing: border-box;
+    padding-right: 0;
+    vertical-align: inherit;
+}
+
+.onoffswitch-inner {
+    display: block;
+    width: 200%;
+    margin-left: -100%;
+    transition: margin 0.15s ease-in 0s;
+}
+
+.onoffswitch-inner:before, .onoffswitch-inner:after {
+    display: block;
+    float: left;
+    width: 50%;
+    height: 15px;
+    padding: 0;
+    line-height: 15px;
+    font-size: 15px;
+    color: white;
+    font-family: Trebuchet, Arial, sans-serif;
+    font-weight: bold;
+    box-sizing: border-box;
+}
+
+.onoffswitch-inner:before {
+    content: "";
+    padding-left: 20px;
+    background-color: #66E155;
+    color: #FFFFFF;
+}
+
+.onoffswitch-inner:after {
+    content: "";
+    padding-right: 20px;
+    background-color: #FF7B78;
+    color: #FFFFFF;
+    text-align: right;
+}
+
+.onoffswitch-switch {
+    display: block;
+    width: 15px;
+    margin: 0px;
+    background: #FFFFFF;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 67px;
+    border: 2px solid #757575;
+    border-radius: 50px;
+    transition: all 0.15s ease-in 0s;
+}
+
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
+    margin-left: 0;
+}
+
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
+    right: 0px;
+}
+
 
 @media (max-width: 600px) {
 

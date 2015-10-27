@@ -12,7 +12,7 @@ if(!isset($input, $errormessages, $attributes)){
  */
 ?>
 
-<div class="form-group">
+<div class="form-group <?php echo $input->GetType(); ?>">
     <label for="<?php echo $input->GetName(); ?>"><?php echo $input->GetLabel(); ?></label>
     <input type="<?php echo $input->GetType(); ?>" name="<?php echo $input->GetName(); ?>" id="<?php echo $input->GetName(); ?>" value="<?php echo $input->GetValue(); ?>"  <?php echo $attributes; ?>/>
     <?php echo $errormessages; ?>

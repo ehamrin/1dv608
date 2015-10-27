@@ -20,6 +20,6 @@ class LessThanEqual extends \Form\model\Validation
             return false;
         }
 
-        return ($value <= $this->min);
+        return empty($value) || ($value <= $this->min);
     }
 }

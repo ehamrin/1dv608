@@ -19,6 +19,6 @@ class LessThan extends \Form\model\Validation
         if(!is_numeric($value)){
             return false;
         }
-        return ($value < $this->min);
+        return empty($value) || ($value < $this->min);
     }
 }

@@ -17,6 +17,6 @@ class MinLength extends \Form\model\Validation
 
     public function Validate($value) : \bool
     {
-        return (is_string($value) && strlen($value) >= $this->min);
+        return empty($value) || (is_string($value) && strlen($value) >= $this->min);
     }
 }

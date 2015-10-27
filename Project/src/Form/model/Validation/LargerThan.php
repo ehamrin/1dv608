@@ -19,6 +19,6 @@ class LargerThan extends \Form\model\Validation
         if(!is_numeric($value)){
             return false;
         }
-        return ($value > $this->max);
+        return empty($value) || ($value > $this->max);
     }
 }

@@ -16,6 +16,6 @@ class MaxLength extends \Form\model\Validation
 
     public function Validate($value) : \bool
     {
-        return (is_string($value) && strlen($value) <= $this->max);
+        return empty($value) || (is_string($value) && strlen($value) <= $this->max);
     }
 }

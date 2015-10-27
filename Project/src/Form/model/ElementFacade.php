@@ -27,6 +27,11 @@ abstract class ElementFacade
         return $this;
     }
 
+    public function GetValue()
+    {
+        return $this->object->GetValue();
+    }
+
     public function SetLabel(\string $label)
     {
         $this->object->SetLabel($label);
