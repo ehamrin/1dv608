@@ -21,8 +21,11 @@
 atlassian-ide-plugin.xml
 
 #Settings file
+2/*
 4/Settings.php
-*/Settings.php
+Project/phpunit/*
+
+
 
 # Crashlytics plugin (for Android Studio and IntelliJ)
 com_crashlytics_export_strings.xml
