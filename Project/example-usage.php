@@ -147,7 +147,7 @@ if($form->WasSubmitted()){
 <div class="gist">
     <h2>Source code</h2>
     <span><em>(<a href="http://gist-it.appspot.com/">http://gist-it.appspot.com/</a>)</em></span>
-    <script src="http://gist-it.appspot.com/https://github.com/ehamrin/1dv608/blob/project/Project/example-usage.php?footer=0"></script>
+    <script src="http://gist-it.appspot.com/https://github.com/ehamrin/1dv608/blob/master/Project/example-usage.php?footer=0"></script>
 </div>
 
 <div class="source-code"><a href="https://github.com/ehamrin/1dv608/tree/project/Project" target="_blank">See it on GitHub!</a></div>
